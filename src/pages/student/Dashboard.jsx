@@ -1,3 +1,4 @@
+import { formatPkr } from '../../utils/currency';
 import { Link } from 'react-router-dom';
 import {
   Plus,
@@ -111,7 +112,7 @@ export default function Dashboard() {
             <span className="text-xs font-bold text-cc-muted uppercase">Balance</span>
             <Wallet className="w-4 h-4 text-cc-lime" />
           </div>
-          <p className="text-3xl font-extrabold text-cc-forest">${Number(bal || 0).toFixed(2)}</p>
+          <p className="text-3xl font-extrabold text-cc-forest">{formatPkr(bal)}</p>
           <p className="text-xs text-cc-muted mt-1">Income − Expenses this month</p>
         </div>
         <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
@@ -119,14 +120,14 @@ export default function Dashboard() {
             <span className="text-xs font-bold text-cc-muted uppercase">Income</span>
             <TrendingUp className="w-4 h-4 text-cc-lime" />
           </div>
-          <p className="text-3xl font-extrabold text-cc-lime">${Number(income || 0).toFixed(2)}</p>
+          <p className="text-3xl font-extrabold text-cc-lime">{formatPkr(income)}</p>
         </div>
         <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-cc-muted uppercase">Expenses</span>
             <TrendingDown className="w-4 h-4 text-red-500" />
           </div>
-          <p className="text-3xl font-extrabold text-cc-ink">${Number(expense || 0).toFixed(2)}</p>
+          <p className="text-3xl font-extrabold text-cc-ink">{formatPkr(expense)}</p>
         </div>
       </div>
 
@@ -139,7 +140,7 @@ export default function Dashboard() {
               <BarChart data={sixMonthTrend}>
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip />
+                <Tooltip formatter={(value) => formatPkr(value)} />
                 <Bar dataKey="income" fill="#5CB85C" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="expense" fill="#0B3D2E" radius={[4, 4, 0, 0]} />
               </BarChart>
@@ -150,7 +151,7 @@ export default function Dashboard() {
         <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
           <h2 className="font-bold text-cc-forest mb-1">This Month&apos;s Top Category</h2>
           <p className="text-sm text-cc-muted mb-3">
-            {topCategory ? `${topCategory.name} · $${topCategory.value.toFixed(0)}` : 'No expenses yet'}
+            {topCategory ? `${topCategory.name} · ${formatPkr(topCategory.value)}` : 'No expenses yet'}
           </p>
           <div className="h-44">
             {pieData.length > 0 ? (
@@ -227,7 +228,7 @@ export default function Dashboard() {
                     <div className="flex justify-between text-xs mb-1">
                       <span className="font-semibold text-cc-ink">{b.category}</span>
                       <span className={over ? 'text-red-600 font-bold' : 'text-cc-muted'}>
-                        ${(spent || 0).toFixed(0)} / ${b.limit}
+                        {formatPkr(spent)} / {formatPkr(b.limit)}
                       </span>
                     </div>
                     <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
@@ -304,7 +305,8 @@ export default function Dashboard() {
                       </span>
                     </td>
                     <td className={`py-2.5 text-right font-bold ${t.type === 'income' ? 'text-cc-lime' : 'text-cc-ink'}`}>
-                      {t.type === 'income' ? '+' : '-'}${Number(t.amount || 0).toFixed(2)}
+                      {t.type === 'income' ? '+' : '−'}
+                      {formatPkr(t.amount)}
                     </td>
                   </tr>
                 ))}

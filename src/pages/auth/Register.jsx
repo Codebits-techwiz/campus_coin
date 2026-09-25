@@ -16,7 +16,7 @@ export default function Register() {
     email: '',
     password: '',
     academicYear: 'Year 1',
-    allowance: '800',
+    allowance: '40000',
   });
 
   const handleSubmit = async (e) => {
@@ -102,7 +102,7 @@ export default function Register() {
               </div>
             </div>
             <div>
-              <label className="text-xs font-semibold text-cc-muted uppercase tracking-wide">Monthly allowance</label>
+              <label className="text-xs font-semibold text-cc-muted uppercase tracking-wide">Monthly allowance (PKR)</label>
               <input
                 type="number"
                 value={form.allowance}

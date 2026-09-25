@@ -63,7 +63,7 @@ export default function Profile() {
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-xs font-semibold text-cc-muted uppercase">Monthly allowance ($)</label>
+            <label className="text-xs font-semibold text-cc-muted uppercase">Monthly allowance (PKR)</label>
             <input
               type="number"
               value={form.monthlyAllowance}
@@ -72,7 +72,7 @@ export default function Profile() {
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-cc-muted uppercase">Savings goal ($)</label>
+            <label className="text-xs font-semibold text-cc-muted uppercase">Savings goal (PKR)</label>
             <input
               type="number"
               value={form.savingsGoal}

@@ -5,11 +5,13 @@ import { Logo } from './Logo';
 import { Button } from './Button';
 
 const navLinks = [
-  { label: 'Home', to: '/', hash: '' },
-  { label: 'Features', to: '/', hash: '#features' },
-  { label: 'How It Works', to: '/', hash: '#how-it-works' },
-  { label: 'Testimonials', to: '/', hash: '#testimonials' },
-  { label: 'FAQ', to: '/', hash: '#faq' },
+  { label: 'Home', to: '/' },
+  { label: 'Features', to: '/features' },
+  { label: 'How It Works', to: '/how-it-works' },
+  { label: 'Pricing', to: '/pricing' },
+  { label: 'Testimonials', to: '/testimonials' },
+  { label: 'FAQ', to: '/faq' },
+  { label: 'Sitemap', to: '/sitemap' },
 ];
 
 export function Navbar() {
@@ -17,16 +19,13 @@ export function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const goHash = (hash) => {
-    setOpen(false);
-    if (location.pathname !== '/') {
-      navigate('/' + hash);
-    } else if (hash) {
-      document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  const isActive = (to) => {
+    if (to === '/') return location.pathname === '/';
+    return location.pathname === to || location.pathname.startsWith(`${to}/`);
   };
+
+  const linkClass = (to) =>
+    `transition ${isActive(to) ? 'text-cc-forest font-semibold' : 'hover:text-cc-forest'}`;
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
@@ -35,28 +34,25 @@ export function Navbar() {
           <Logo />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-cc-muted">
+        <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-cc-muted">
           {navLinks.map((l) => (
-            <button
-              key={l.label}
-              type="button"
-              onClick={() => goHash(l.hash)}
-              className="hover:text-cc-forest transition"
-            >
+            <Link key={l.to} to={l.to} className={linkClass(l.to)}>
               {l.label}
-            </button>
+            </Link>
           ))}
-          <Link to="/sitemap" className="hover:text-cc-forest transition">
-            Sitemap
-          </Link>
         </nav>
 
         <div className="hidden sm:flex items-center gap-3">
-          <Link to="/login" className="text-sm font-semibold text-cc-forest hover:text-cc-lime transition px-2">
+          <Link
+            to="/login"
+            className={`text-sm font-semibold px-2 transition ${
+              isActive('/login') ? 'text-cc-lime' : 'text-cc-forest hover:text-cc-lime'
+            }`}
+          >
             Login
           </Link>
           <Button onClick={() => navigate('/register')} className="!rounded-full !px-5">
-            Get Started <ArrowRight className="w-4 h-4" />
+            Sign Up <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
 
@@ -71,20 +67,19 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="lg:hidden bg-white border-b border-gray-100 px-6 py-4 space-y-3 animate-fade-in">
+        <div className="lg:hidden bg-white border-b border-gray-100 px-6 py-4 space-y-1 animate-fade-in">
           {navLinks.map((l) => (
-            <button
-              key={l.label}
-              type="button"
-              onClick={() => goHash(l.hash)}
-              className="block w-full text-left py-2 font-medium text-cc-ink"
+            <Link
+              key={l.to}
+              to={l.to}
+              onClick={() => setOpen(false)}
+              className={`block w-full py-2.5 font-medium ${
+                isActive(l.to) ? 'text-cc-forest' : 'text-cc-ink'
+              }`}
             >
               {l.label}
-            </button>
+            </Link>
           ))}
-          <Link to="/sitemap" onClick={() => setOpen(false)} className="block py-2 font-medium text-cc-ink">
-            Sitemap
-          </Link>
           <div className="pt-3 border-t border-gray-100 flex gap-3">
             <Link
               to="/login"
@@ -98,7 +93,7 @@ export function Navbar() {
               onClick={() => setOpen(false)}
               className="flex-1 py-2.5 text-center bg-cc-forest text-white rounded-xl font-semibold"
             >
-              Get Started
+              Sign Up
             </Link>
           </div>
         </div>

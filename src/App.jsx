@@ -5,6 +5,11 @@ import { PublicLayout } from './layouts/PublicLayout';
 import { StudentLayout } from './layouts/StudentLayout';
 import { AdminLayout } from './layouts/AdminLayout';
 import Home from './pages/public/Home';
+import Features from './pages/public/Features';
+import HowItWorks from './pages/public/HowItWorks';
+import Pricing from './pages/public/Pricing';
+import Testimonials from './pages/public/Testimonials';
+import Faq from './pages/public/Faq';
 import Sitemap from './pages/public/Sitemap';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -66,6 +71,11 @@ function AppRoutes() {
         {/* Public routes */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/testimonials" element={<Testimonials />} />
+          <Route path="/faq" element={<Faq />} />
           <Route path="/sitemap" element={<Sitemap />} />
           <Route
             path="/login"
@@ -73,6 +83,10 @@ function AppRoutes() {
           />
           <Route
             path="/register"
+            element={<RedirectIfLoggedIn to={<Register />} />}
+          />
+          <Route
+            path="/signup"
             element={<RedirectIfLoggedIn to={<Register />} />}
           />
           <Route path="/forgot-password" element={<ForgotPassword />} />

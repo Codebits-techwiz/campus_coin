@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, Sparkles, X, Search } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { Button } from '../../components/Button';
+import { formatPkr } from '../../utils/currency';
 
 const empty = {
   type: 'expense',
@@ -158,7 +159,7 @@ export default function Transactions() {
               </select>
             </div>
             <div>
-              <label className="text-xs font-semibold text-cc-muted uppercase">Amount ($)</label>
+              <label className="text-xs font-semibold text-cc-muted uppercase">Amount (PKR)</label>
               <input
                 type="number"
                 step="0.01"
@@ -257,7 +258,8 @@ export default function Transactions() {
                     </td>
                     <td className="px-4 py-3 capitalize text-xs font-semibold text-cc-muted">{t.type}</td>
                     <td className={`px-4 py-3 text-right font-bold ${t.type === 'income' ? 'text-cc-lime' : 'text-red-500'}`}>
-                      {t.type === 'income' ? '+' : '-'}${Number(t.amount).toFixed(2)}
+                      {t.type === 'income' ? '+' : '−'}
+                      {formatPkr(t.amount)}
                     </td>
                     <td className="px-4 py-3 text-right">
                       <button type="button" onClick={() => openEdit(t)} className="p-1.5 text-cc-muted hover:text-cc-lime">

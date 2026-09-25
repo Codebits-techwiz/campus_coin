@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Target, Bell, Plus, Trash2, CheckCheck } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { Button } from '../../components/Button';
+import { formatPkr } from '../../utils/currency';
 
 export default function Budgets() {
   const {
@@ -119,7 +120,7 @@ export default function Budgets() {
           </select>
         </div>
         <div className="w-36">
-          <label className="text-xs font-semibold text-cc-muted uppercase">Monthly Limit ($)</label>
+          <label className="text-xs font-semibold text-cc-muted uppercase">Monthly Limit (PKR)</label>
           <input
             type="number"
             step="0.01"
@@ -164,9 +165,9 @@ export default function Budgets() {
                   <div className="flex items-center gap-3">
                     <div className="text-right">
                       <p className="font-extrabold text-cc-ink">
-                        ${Number(spent || 0).toFixed(2)}{' '}
+                        {formatPkr(spent)}{' '}
                         <span className="text-cc-muted font-medium text-sm">
-                          / ${Number(lim).toFixed(2)}
+                          / {formatPkr(lim)}
                         </span>
                       </p>
                       {near && (

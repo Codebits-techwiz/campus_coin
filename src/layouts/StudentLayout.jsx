@@ -17,7 +17,6 @@ import {
   Bookmark
 } from 'lucide-react';
 import { Logo } from '../components/Logo';
-import { RoleSwitcher } from '../components/RoleSwitcher';
 import { Toast } from '../components/Toast';
 import { useApp } from '../context/AppContext';
 import api from '../api';
@@ -72,7 +71,6 @@ export function StudentLayout() {
 
   return (
     <div className="min-h-screen flex flex-col bg-cc-mint-soft">
-      <RoleSwitcher />
       <div className="flex flex-1">
         <aside className="hidden lg:flex w-64 flex-col bg-cc-forest text-white shrink-0">
           <div className="p-5 border-b border-white/10">

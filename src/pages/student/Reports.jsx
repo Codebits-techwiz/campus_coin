@@ -17,6 +17,7 @@ import {
 import api from '../../api';
 import { useApp } from '../../context/AppContext';
 import { Button } from '../../components/Button';
+import { formatPkr } from '../../utils/currency';
 
 const COLORS = ['#5CB85C', '#0B3D2E', '#F5C518', '#3D9B3D', '#95cea4', '#145A43', '#62b375'];
 
@@ -145,7 +146,7 @@ export default function Reports() {
                           <Cell key={i} fill={COLORS[i % COLORS.length]} />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(value) => `$${value.toFixed(2)}`} />
+                      <Tooltip formatter={(value) => formatPkr(value)} />
                     </PieChart>
                   </ResponsiveContainer>
                 ) : (
@@ -162,7 +163,7 @@ export default function Reports() {
                     <BarChart data={trend6Months}>
                       <XAxis dataKey="month" />
                       <YAxis />
-                      <Tooltip formatter={(value) => `$${value}`} />
+                      <Tooltip formatter={(value) => formatPkr(value)} />
                       <Bar dataKey="income" fill="#5CB85C" name="Income" />
                       <Bar dataKey="expense" fill="#0B3D2E" name="Expense" />
                     </BarChart>
@@ -179,11 +180,11 @@ export default function Reports() {
             <div className="flex gap-10">
                <div>
                   <p className="text-xs text-cc-muted uppercase font-bold mb-1">Daily Average Spending</p>
-                  <p className="text-2xl font-extrabold text-cc-ink">${Number(dailyWeekly.dailyAverage || 0).toFixed(2)}</p>
+                  <p className="text-2xl font-extrabold text-cc-ink">{formatPkr(dailyWeekly.dailyAverage)}</p>
                </div>
                <div>
                   <p className="text-xs text-cc-muted uppercase font-bold mb-1">Weekly Average Spending</p>
-                  <p className="text-2xl font-extrabold text-cc-ink">${Number(dailyWeekly.weeklyAverage || 0).toFixed(2)}</p>
+                  <p className="text-2xl font-extrabold text-cc-ink">{formatPkr(dailyWeekly.weeklyAverage)}</p>
                </div>
             </div>
           </div>
