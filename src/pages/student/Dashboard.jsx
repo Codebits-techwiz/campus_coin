@@ -29,24 +29,24 @@ import { useState, useEffect } from 'react';
 
 const COLORS = ['#5CB85C', '#0B3D2E', '#F5C518', '#3D9B3D', '#95cea4', '#145A43'];
 
-// Helper: normalize transaction id
+
 const getTxId = (t) => t._id || t.id;
 
-// Helper: get category name from either object or string
+
 const getCatName = (t) => {
   if (t.category && typeof t.category === 'object') return t.category.name;
-  return t.category || '—';
+  return t.category || '-';
 };
 
 export default function Dashboard() {
   const { profile, balance, monthIncome, monthExpense, transactions, tips, budgets, monthSpent, announcements, dashboardSummary, notifications, unreadCount } =
     useApp();
 
-  // Prefer real API summary when available, fallback to local calc
+
   const income  = dashboardSummary?.currentMonth?.income  ?? monthIncome;
   const expense = dashboardSummary?.currentMonth?.expenses ?? monthExpense;
   const bal     = dashboardSummary?.currentMonth?.balance  ?? balance;
-  // Use recent transactions from API if available, else first 5 from state
+
   const recentTx = dashboardSummary?.recentTransactions ?? transactions.slice(0, 5);
 
   const [activities, setActivities] = useState([]);
@@ -61,7 +61,7 @@ export default function Dashboard() {
       .catch(console.error);
   }, []);
 
-  // Build pie data from real transactions (category may be object or string)
+
   const currentMonth = new Date().toISOString().slice(0, 7);
   const expenseByCat = {};
   transactions
@@ -99,10 +99,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Announcements */}
+
       {(announcements || []).filter((a) => a.active).slice(0, 1).map((a) => (
         <div key={a._id || a.id} className="bg-cc-mint border border-cc-lime/30 rounded-2xl px-5 py-3 text-sm text-cc-forest">
-          <strong>{a.title}</strong> — {a.body}
+          <strong>{a.title}</strong>: {a.body}
         </div>
       ))}
 
@@ -131,7 +131,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Charts */}
+
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
           <h2 className="font-bold text-cc-forest mb-4">Income vs Expense (6 months)</h2>
@@ -151,7 +151,7 @@ export default function Dashboard() {
         <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
           <h2 className="font-bold text-cc-forest mb-1">This Month&apos;s Top Category</h2>
           <p className="text-sm text-cc-muted mb-3">
-            {topCategory ? `${topCategory.name} · ${formatPkr(topCategory.value)}` : 'No expenses yet'}
+            {topCategory ? `${topCategory.name} - ${formatPkr(topCategory.value)}` : 'No expenses yet'}
           </p>
           <div className="h-44">
             {pieData.length > 0 ? (
@@ -174,7 +174,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Tips & Budget */}
+
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
@@ -245,7 +245,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Recent Activity (Jump Back In) */}
+
       <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
         <h2 className="font-bold text-cc-forest mb-4">Jump Back In (Recent Activity)</h2>
         {activities.length === 0 ? (
@@ -262,7 +262,7 @@ export default function Dashboard() {
                     {act.action === 'create' ? 'Created' : 'Edited'} {act.transaction ? 'Transaction' : 'Category'}
                   </p>
                   <p className="text-xs text-cc-muted">
-                    {act.transaction ? act.transaction.description : ''} · {new Date(act.at).toLocaleDateString()}
+                    {act.transaction ? act.transaction.description : ''} - {new Date(act.at).toLocaleDateString()}
                   </p>
                 </div>
               </div>
@@ -271,7 +271,7 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Recent Transactions */}
+
       <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-bold text-cc-forest">Recent Transactions</h2>
@@ -296,7 +296,7 @@ export default function Dashboard() {
                 {recentTx.map((t) => (
                   <tr key={getTxId(t)} className="border-b border-gray-50">
                     <td className="py-2.5 text-cc-muted whitespace-nowrap">
-                      {t.date ? new Date(t.date).toLocaleDateString() : '—'}
+                      {t.date ? new Date(t.date).toLocaleDateString() : '-'}
                     </td>
                     <td className="py-2.5 font-medium text-cc-ink">{t.description}</td>
                     <td className="py-2.5">

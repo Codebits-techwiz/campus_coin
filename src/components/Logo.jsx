@@ -23,11 +23,11 @@ export function Logo({ className = '', dark = false, size = 'md' }) {
             </linearGradient>
           </defs>
 
-          {/* Outer gold coin rim */}
+
           <circle cx="24" cy="24" r="22" fill={`url(#${uid}-rim)`} />
-          {/* Inner green face */}
+
           <circle cx="24" cy="24" r="17.5" fill={`url(#${uid}-face)`} />
-          {/* Fine inner ring */}
+
           <circle
             cx="24"
             cy="24"
@@ -37,7 +37,7 @@ export function Logo({ className = '', dark = false, size = 'md' }) {
             strokeWidth="1.2"
           />
 
-          {/* Dual C monogram */}
+
           <path
             d="M28.8 16.2c-1.1-.7-2.4-1.1-3.8-1.1-4.2 0-7.6 3.2-7.6 7.2s3.4 7.2 7.6 7.2c1.4 0 2.7-.4 3.8-1.1"
             fill="none"
@@ -54,11 +54,11 @@ export function Logo({ className = '', dark = false, size = 'md' }) {
             opacity="0.92"
           />
 
-          {/* Coin accent */}
+
           <circle cx="33.5" cy="24.1" r="2.1" fill="#F5C518" />
           <circle cx="33.5" cy="24.1" r="1" fill="#0B3D2E" />
 
-          {/* Soft highlight */}
+
           <ellipse cx="18" cy="16" rx="8" ry="5" fill={`url(#${uid}-shine)`} />
         </svg>
       </div>

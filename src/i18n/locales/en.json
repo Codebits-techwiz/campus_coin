@@ -1,0 +1,309 @@
+{
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "pricing": "Pricing",
+    "testimonials": "Testimonials",
+    "faq": "FAQ",
+    "sitemap": "Sitemap",
+    "login": "Login",
+    "signUp": "Sign Up",
+    "themeLight": "Light mode",
+    "themeDark": "Dark mode",
+    "language": "Language",
+    "english": "English",
+    "urdu": "Urdu",
+    "menu": "Toggle menu"
+  },
+  "footer": {
+    "tagline": "Smart spending for students. Track income, expenses, and get AI tips without linking a bank.",
+    "brandLine": "Campus Coin. NextGen BudgetBee. End-to-End Web Solutions",
+    "rights": "© 2026 Campus Coin. All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "getStartedFree": "Get Started Free",
+    "seeHowItWorks": "See how it works",
+    "createFreeAccount": "Create free account",
+    "startTracking": "Start Tracking Now",
+    "subscribedThanks": "You are on the list. Thanks!"
+  },
+  "features": {
+    "eyebrow": "Features",
+    "title": "Everything you need to manage campus money",
+    "subtitle": "From quick logging in PKR to AI insights, one place for the full student money loop.",
+    "cta": "Start tracking in PKR",
+    "items": {
+      "track": {
+        "title": "Track Income & Expenses",
+        "desc": "Log allowance, gig pay, food, transport, and more in seconds. No bank account required."
+      },
+      "categories": {
+        "title": "Smart Categories",
+        "desc": "Student-focused categories for hostel, academics, subscriptions, and entertainment."
+      },
+      "ai": {
+        "title": "AI Assistant",
+        "desc": "Get automatic category suggestions as you type, and override anytime."
+      },
+      "reports": {
+        "title": "Visual Reports",
+        "desc": "See monthly trends, category breakdowns, and income vs expense at a glance."
+      },
+      "tips": {
+        "title": "Personalized Saving Tips",
+        "desc": "Tips ranked by impact, based on your own history and budget goals."
+      },
+      "access": {
+        "title": "Access Anywhere",
+        "desc": "Responsive web app that works smoothly on phone, tablet, and desktop."
+      }
+    }
+  },
+  "howItWorks": {
+    "eyebrow": "How It Works",
+    "title": "Get started in 3 simple steps",
+    "subtitle": "From signup to your first AI tip, Campus Coin keeps the flow simple for busy students.",
+    "steps": {
+      "1": {
+        "title": "Create Your Account",
+        "desc": "Sign up with your campus email and set your monthly allowance baseline in PKR."
+      },
+      "2": {
+        "title": "Add Your Transactions",
+        "desc": "Quick-add income and expenses. AI suggests categories as you type."
+      },
+      "3": {
+        "title": "See Your Insights",
+        "desc": "Review charts, budgets, and plain saving tips every month."
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Simple. Student-friendly. Flexible.",
+    "subtitle": "Try free for your first month, then pick the plan that fits your campus budget.",
+    "plans": {
+      "starter": {
+        "name": "Starter Trial",
+        "period": "/ first month only",
+        "badge": "First time",
+        "cta": "Start Free Month",
+        "perks": [
+          "Up to 50 transactions",
+          "2 budget categories",
+          "Basic category suggestions",
+          "Monthly spending overview",
+          "New accounts only"
+        ]
+      },
+      "student": {
+        "name": "Student",
+        "period": "/ month",
+        "badge": "Most popular",
+        "cta": "Get Student Plan",
+        "perks": [
+          "Unlimited transactions",
+          "Budgets and alerts",
+          "AI category suggestions",
+          "Reports and insights",
+          "Mobile-friendly web app"
+        ]
+      },
+      "pro": {
+        "name": "Campus Pro",
+        "period": "/ month",
+        "badge": "",
+        "cta": "Go Pro",
+        "perks": [
+          "Everything in Student",
+          "Priority AI tips",
+          "Savings goal tracking",
+          "CSV import and export",
+          "Multi-device sync"
+        ]
+      }
+    }
+  },
+  "testimonialsPage": {
+    "eyebrow": "Testimonials",
+    "title": "What our students say",
+    "subtitle": "Real feedback from students tracking campus life spending with Campus Coin in PKR."
+  },
+  "faqPage": {
+    "eyebrow": "FAQ",
+    "title": "Frequently asked questions",
+    "subtitle": "Quick answers about Campus Coin, privacy, PKR budgets, and AI tips."
+  },
+  "sitemapPage": {
+    "eyebrow": "Sitemap",
+    "title": "Application sitemap",
+    "subtitle": "Complete navigation map of Campus Coin. Public, Auth, Student, and Admin.",
+    "hint": "Jump between experiences using the links below. Amounts across the app are shown in PKR.",
+    "public": "Public",
+    "auth": "Authentication",
+    "student": "Student App",
+    "admin": "Admin Control Panel"
+  },
+  "faq": {
+    "bank": {
+      "q": "Do I need to link a bank account?",
+      "a": "No. Campus Coin is built for manual entry and optional CSV import. No bank integration required."
+    },
+    "ai": {
+      "q": "Is the AI advice financial advice?",
+      "a": "No. AI categorization and insights are suggestions you can review or override. Not certified financial advice."
+    },
+    "budgets": {
+      "q": "Can I set budgets per category?",
+      "a": "Yes. Set monthly limits in PKR (e.g. Food Rs 12,000) and get in-app alerts when you near or exceed them."
+    },
+    "admin": {
+      "q": "Who can use the admin panel?",
+      "a": "Administrators manage default categories, announcements, users, and platform usage statistics."
+    }
+  },
+  "testimonials": {
+    "ali": {
+      "role": "University Student",
+      "quote": "Finally an app that gets student life. Logging canteen food takes seconds, and the tips actually make sense."
+    },
+    "sara": {
+      "role": "Hostel Resident",
+      "quote": "The budget alerts saved me from overspending on food delivery during exam week. Love the AI insights!"
+    },
+    "omar": {
+      "role": "Part-time Worker",
+      "quote": "I track my gig income and scholarships in one place. Charts are clear and no bank linking needed."
+    }
+  },
+  "auth": {
+    "loginTitle": "Welcome back",
+    "loginSub": "Sign in to your Campus Coin account",
+    "email": "Email",
+    "password": "Password",
+    "forgot": "Forgot password?",
+    "signIn": "Sign In",
+    "signingIn": "Signing In...",
+    "noAccount": "Do not have an account?",
+    "registerTitle": "Create your account",
+    "registerSub": "Start tracking campus money in PKR",
+    "name": "Full name",
+    "confirmPassword": "Confirm password",
+    "creating": "Creating Account...",
+    "haveAccount": "Already have an account?",
+    "forgotTitle": "Reset password",
+    "forgotSub": "Enter your email and we will send a reset link",
+    "sending": "Sending...",
+    "sendLink": "Send reset link",
+    "backToLogin": "Back to login",
+    "adminTitle": "Admin login",
+    "adminSub": "Direct access, separate from student portal",
+    "entering": "Entering...",
+    "enterPanel": "Enter Control Panel"
+  },
+  "home": {
+    "badge": "Your Money",
+    "headline1": "Your",
+    "headline2": "Pace.",
+    "headline3": "Your Money",
+    "sub": "Keep tabs on pocket money, daily spends, and dream goals made for campus with friendly AI tips that get you. No bank account needed.",
+    "noBank": "No Bank Account Required",
+    "studentCats": "Student Focused Categories",
+    "aiInsights": "AI Powered Insights",
+    "trust": "Built for campus life across universities",
+    "madeFor": "Made for students",
+    "allowanceTitle": "Your allowance deserves a better plan than a notes app",
+    "allowanceBody": "Campus Coin turns messy receipts, cafe runs, and part-time pay into a clear picture of where your money goes, so midterms do not wreck your budget.",
+    "bullet1": "Categories that match real campus life",
+    "bullet2": "Budgets that warn you before you overspend",
+    "bullet3": "Tips written like a friend, not a bank",
+    "savingsMonth": "Savings this month",
+    "featuresEyebrow": "Features",
+    "featuresTitle": "Everything You Need to Manage Your Money",
+    "featuresSub": "From quick logging to AI insights, one place for the full student money loop.",
+    "visualEyebrow": "Visual reports",
+    "visualTitle": "See your month in one glance",
+    "visualBody": "Charts for income vs expense, category breakdowns, and budget progress. Built so you actually understand them between lectures.",
+    "tagTrends": "Monthly trends",
+    "tagPie": "Category pie",
+    "tagBars": "Budget bars",
+    "incomeVsExpense": "Income vs Expense",
+    "aiEyebrow": "AI assistant",
+    "aiTitle": "Insights that sound like campus, not corporate",
+    "aiBody": "Auto-suggest categories as you type. Get plain tips ranked by impact. Pin the useful ones, dismiss the rest.",
+    "aiBullet1": "Smart category suggestions while you type",
+    "aiBullet2": "Monthly summaries you can actually read",
+    "aiBullet3": "Tips you can pin for exam week",
+    "howEyebrow": "How It Works",
+    "howTitle": "Get Started in 3 Simple Steps",
+    "forYouEyebrow": "Made for you",
+    "forYouTitle": "Whatever your campus hustle looks like",
+    "undergrads": "Undergrads",
+    "undergradsDesc": "Track allowance, books, and weekend plans without the stress.",
+    "hostel": "Hostel life",
+    "hostelDesc": "Rent, laundry, shared groceries. Keep fixed costs in check.",
+    "commuters": "Commuters",
+    "commutersDesc": "Bus passes vs ride-shares: see what actually saves money.",
+    "partTimers": "Part-timers",
+    "partTimersDesc": "Log gig pay and scholarships next to everyday spending.",
+    "campusEyebrow": "Campus life",
+    "campusTitle": "Money habits that fit your semester",
+    "campusSub": "From library marathons to late-night cafe runs, Campus Coin keeps up.",
+    "trustNoBank": "No bank linking",
+    "trustNoBankDesc": "Manual entry and optional CSV import. Your banking stays yours.",
+    "trustPrivate": "Private by design",
+    "trustPrivateDesc": "You control what is logged. Insights stay in your account.",
+    "trustStudents": "Built with students",
+    "trustStudentsDesc": "Categories, tips, and flows shaped by real campus money habits.",
+    "pricingEyebrow": "Pricing",
+    "pricingTitle": "Simple. Student-friendly. Flexible.",
+    "pricingSub": "Try free for your first month, then pick the plan that fits your campus budget.",
+    "testimonialsEyebrow": "Testimonials",
+    "testimonialsTitle": "What Our Students Say",
+    "faqEyebrow": "FAQ",
+    "faqTitle": "Frequently Asked Questions",
+    "ctaTitle": "This semester, know where every rupee goes",
+    "ctaSub": "Join thousands of students building calmer money habits, one tap at a time.",
+    "joinCampus": "Join Campus Coin",
+    "newsletterTitle": "Get student money tips in your inbox",
+    "newsletterSub": "Short, practical advice. No spam, unsubscribe anytime.",
+    "subscribe": "Subscribe",
+    "readyTitle": "Ready to take control of your finances?",
+    "readySub": "Join Campus Coin today and start building smarter money habits, one transaction at a time.",
+    "smallSteps": "Small steps. Big goals.",
+    "statStudents": "Students tracking",
+    "statExpenses": "Expenses logged",
+    "statReduced": "Avg. spend reduced",
+    "statRating": "Student rating",
+    "activeMonth": "Active Month",
+    "currentBalance": "Current Balance",
+    "monthlyIncome": "Monthly Income",
+    "totalSpent": "Total Spent",
+    "recentLogs": "Recent Logs",
+    "addNew": "Add New",
+    "monthlyGoal": "Monthly Goal",
+    "aiInsightLabel": "AI Assistant Insight",
+    "aiInsightShort": "AI Insight",
+    "aiInsightBody": "Food delivery spending rose 40% this month. Capping weekly orders saves Rs 3,500.",
+    "aiInsightCafe": "Food delivery rose 40%. Cap it at Rs 2,000 a week to save about Rs 3,500.",
+    "aiInsightWeek": "Food delivery rose 40% this month. Try a Rs 2,000 weekly cap to save about Rs 3,500.",
+    "dashboardTitle": "Campus Coin Dashboard",
+    "spent": "Spent",
+    "spendingOverview": "Spending Overview",
+    "recent": "Recent",
+    "txFood": "Food - Rs 450",
+    "txTransport": "Transport - Rs 200",
+    "txAcademics": "Academics - Rs 3,500",
+    "foodCanteen": "Food & Canteen (72%)",
+    "academicsBooks": "Academics & Books (35%)",
+    "foodCap": "Rs 14,400 / Rs 20,000 Cap",
+    "academicsCap": "Rs 7,000 / Rs 20,000 Cap",
+    "monthlyAllowance": "Monthly Allowance",
+    "incomeParent": "Income - Parent Transfer",
+    "campusCafe": "Campus Cafe",
+    "foodAiTagged": "Food - AI Auto-tagged",
+    "goalMet": "Rs 10,000 Goal - 85% Met"
+  }
+}

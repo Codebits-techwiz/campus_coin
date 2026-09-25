@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from './Button';
 
-/** Shared hero shell for public marketing pages */
 export function PageHero({ eyebrow, title, subtitle, cta }) {
+  const { t } = useTranslation();
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-cc-forest via-[#0f4a38] to-cc-forest-light text-white">
       <div className="absolute top-0 right-0 w-80 h-80 bg-cc-lime/15 rounded-full blur-3xl pointer-events-none" />
@@ -26,7 +27,7 @@ export function PageHero({ eyebrow, title, subtitle, cta }) {
           <div className="mt-8">
             <Link to={cta.to || '/register'}>
               <Button variant="white" className="!rounded-full !px-7">
-                {cta.label || 'Get Started Free'} <ArrowRight className="w-4 h-4" />
+                {cta.label || t('common.getStartedFree')} <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
           </div>

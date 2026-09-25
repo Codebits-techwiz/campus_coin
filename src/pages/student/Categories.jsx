@@ -10,7 +10,7 @@ export default function Categories() {
   const [form, setForm] = useState({ name: '', type: 'expense', icon: '📁', color: '#6B7280' });
   const [loading, setLoading] = useState(false);
 
-  // Backend uses _id, so we normalise
+
   const getId = (c) => c._id || c.id;
 
   const personal = categories.filter((c) => !c.isDefault);
@@ -50,7 +50,7 @@ export default function Categories() {
             </span>
             <div>
               <p className="font-semibold text-cc-forest">{c.name}</p>
-              <p className="text-xs text-cc-muted capitalize">{c.type} · {c.isDefault ? 'Default' : 'Personal'}</p>
+              <p className="text-xs text-cc-muted capitalize">{c.type} / {c.isDefault ? 'Default' : 'Personal'}</p>
             </div>
           </div>
           {allowEdit && (
@@ -145,7 +145,7 @@ export default function Categories() {
 
       <section>
         <h2 className="font-bold text-cc-forest mb-3">System Default Categories</h2>
-        <p className="text-xs text-cc-muted mb-3">Provided to all students — view only (admin can edit defaults)</p>
+        <p className="text-xs text-cc-muted mb-3">Provided to all students. View only (admin can edit defaults)</p>
         <CatList items={defaults} allowEdit={false} />
       </section>
     </div>

@@ -8,6 +8,7 @@ import {
   Lightbulb,
   Smartphone,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/Button';
 import { PageHero } from '../../components/PageHero';
 import { features } from '../../data/mockData';
@@ -23,14 +24,15 @@ const iconMap = {
 
 export default function Features() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="animate-fade-in min-h-[70vh]">
       <PageHero
-        eyebrow="Features"
-        title="Everything you need to manage campus money"
-        subtitle="From quick logging in PKR to AI insights — one place for the full student money loop."
-        cta={{ to: '/register', label: 'Get Started Free' }}
+        eyebrow={t('features.eyebrow')}
+        title={t('features.title')}
+        subtitle={t('features.subtitle')}
+        cta={{ to: '/register', label: t('common.getStartedFree') }}
       />
 
       <section className="py-16 sm:py-20 bg-cc-mint-soft">
@@ -40,14 +42,14 @@ export default function Features() {
               const Icon = iconMap[f.icon];
               return (
                 <div
-                  key={f.title}
+                  key={f.id}
                   className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:border-cc-lime/30 hover:-translate-y-0.5 transition group"
                 >
                   <div className="w-12 h-12 rounded-xl bg-cc-mint text-cc-lime flex items-center justify-center mb-4 group-hover:bg-cc-lime group-hover:text-white transition">
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h2 className="text-lg font-bold text-cc-forest mb-2">{f.title}</h2>
-                  <p className="text-sm text-cc-muted leading-relaxed">{f.desc}</p>
+                  <h2 className="text-lg font-bold text-cc-forest mb-2">{t(f.titleKey)}</h2>
+                  <p className="text-sm text-cc-muted leading-relaxed">{t(f.descKey)}</p>
                 </div>
               );
             })}
@@ -55,7 +57,7 @@ export default function Features() {
 
           <div className="text-center mt-12">
             <Button className="!rounded-full !px-7" onClick={() => navigate('/register')}>
-              Start tracking in PKR <ArrowRight className="w-4 h-4" />
+              {t('features.cta')} <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </div>

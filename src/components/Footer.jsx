@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Logo } from './Logo';
 
 function IconX({ className = 'w-4 h-4' }) {
@@ -42,58 +43,61 @@ const socials = [
   { label: 'YouTube', href: 'https://youtube.com', Icon: IconYouTube },
 ];
 
-const footerLinks = [
-  { label: 'Home', to: '/' },
-  { label: 'Features', to: '/features' },
-  { label: 'How It Works', to: '/how-it-works' },
-  { label: 'Pricing', to: '/pricing' },
-  { label: 'Testimonials', to: '/testimonials' },
-  { label: 'FAQ', to: '/faq' },
-  { label: 'Sitemap', to: '/sitemap' },
-  { label: 'Login', to: '/login' },
-  { label: 'Sign Up', to: '/register' },
+const footerLinkDefs = [
+  { key: 'home', to: '/' },
+  { key: 'features', to: '/features' },
+  { key: 'howItWorks', to: '/how-it-works' },
+  { key: 'pricing', to: '/pricing' },
+  { key: 'testimonials', to: '/testimonials' },
+  { key: 'faq', to: '/faq' },
+  { key: 'login', to: '/login' },
+  { key: 'signUp', to: '/register' },
 ];
 
 export function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-cc-forest text-white mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-10 mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-8 mb-10">
           <div className="max-w-xs space-y-3">
             <Logo dark />
             <p className="text-sm text-white/70 leading-relaxed">
-              Smart spending for students — track income, expenses, and get AI-powered insights without linking a bank.
+              {t('footer.tagline')}
             </p>
           </div>
 
-          <nav className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-white/80">
-            {footerLinks.map((l) => (
-              <Link key={l.to} to={l.to} className="hover:text-cc-lime transition">
-                {l.label}
-              </Link>
-            ))}
-          </nav>
+          <div className="flex flex-col items-start sm:items-end gap-5 shrink-0">
+            <div className="flex items-center gap-3">
+              {socials.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={label}
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-cc-lime hover:border-cc-lime hover:text-white transition"
+                  aria-label={label}
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
 
-          <div className="flex items-center gap-3">
-            {socials.map(({ label, href, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={label}
-                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-cc-lime hover:border-cc-lime hover:text-white transition"
-                aria-label={label}
-              >
-                <Icon className="w-4 h-4" />
-              </a>
-            ))}
+            <nav className="flex flex-wrap items-center justify-start sm:justify-end gap-x-5 gap-y-2 text-sm text-white/80">
+              {footerLinkDefs.map((l) => (
+                <Link key={l.to} to={l.to} className="hover:text-cc-lime transition whitespace-nowrap">
+                  {t(`nav.${l.key}`)}
+                </Link>
+              ))}
+            </nav>
           </div>
         </div>
 
         <div className="pt-6 border-t border-white/15 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/50">
-          <p>Campus Coin — NextGen BudgetBee · End-to-End Web Solutions</p>
-          <p>© 2026 Campus Coin. All rights reserved.</p>
+          <p>{t('footer.brandLine')}</p>
+          <p>{t('footer.rights')}</p>
         </div>
       </div>
     </footer>

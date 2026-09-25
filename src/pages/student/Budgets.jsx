@@ -32,9 +32,9 @@ export default function Budgets() {
     e.preventDefault();
     setSubmitting(true);
     const ok = await addBudget({
-      category: categoryId,          // MongoDB _id of the category
-      month: currentMonth,           // e.g. "2026-09"
-      limitAmount: Number(limit),    // backend expects limitAmount
+      category: categoryId,
+      month: currentMonth,
+      limitAmount: Number(limit),
     });
     setSubmitting(false);
     if (ok) {
@@ -43,7 +43,7 @@ export default function Budgets() {
     }
   };
 
-  // Notifications are budget_alert or anomaly type
+
   const budgetNotifs = notifications.filter(
     (n) => n.type === 'budget_alert' || n.type === 'anomaly'
   );
@@ -59,7 +59,7 @@ export default function Budgets() {
         </p>
       </div>
 
-      {/* Notification Alerts from backend */}
+
       {budgetNotifs.length > 0 && (
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-2">
           <div className="flex items-center justify-between mb-1">
@@ -98,7 +98,7 @@ export default function Budgets() {
         </div>
       )}
 
-      {/* Add Budget Form */}
+
       <form
         onSubmit={submit}
         className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm flex flex-wrap gap-4 items-end"
@@ -111,7 +111,7 @@ export default function Budgets() {
             onChange={(e) => setCategoryId(e.target.value)}
             className="mt-1 w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-cc-lime"
           >
-            <option value="">Select…</option>
+            <option value="">Select...</option>
             {expenseCats.map((c) => (
               <option key={c._id || c.id} value={c._id || c.id}>
                 {c.icon} {c.name}
@@ -132,11 +132,11 @@ export default function Budgets() {
           />
         </div>
         <Button type="submit" disabled={submitting} className="!rounded-xl">
-          <Plus className="w-4 h-4" /> {submitting ? 'Saving…' : 'Save Budget'}
+          <Plus className="w-4 h-4" /> {submitting ? 'Saving...' : 'Save Budget'}
         </Button>
       </form>
 
-      {/* Budget List */}
+
       <div className="space-y-4">
         {budgets.length === 0 ? (
           <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-8 text-center text-sm text-cc-muted">
@@ -144,13 +144,13 @@ export default function Budgets() {
           </div>
         ) : (
           budgets.map((b) => {
-            // Backend returns currentSpent and limitAmount
+
             const spent = b.currentSpent ?? monthSpent(b.category?._id || b.categoryId);
             const lim   = b.limitAmount ?? b.limit ?? 1;
             const pct   = Math.min(100, Math.round((spent / lim) * 100));
             const near  = pct >= 80;
             const over  = spent >= lim;
-            const catName = b.category?.name || b.category || '—';
+            const catName = b.category?.name || b.category || '-';
             const catIcon = b.category?.icon || '';
 
             return (

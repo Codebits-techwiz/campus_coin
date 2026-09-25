@@ -28,12 +28,12 @@ export default function Transactions() {
   const [search, setSearch] = useState('');
   const [aiHint, setAiHint] = useState(null);
 
-  // Backend returns _id, normalise helper
+
   const getId = (t) => t._id || t.id;
   const getCatId = (t) => t.category?._id || t.category;
-  const getCatName = (t) => t.category?.name || t.category || '—';
+  const getCatName = (t) => t.category?.name || t.category || '-';
 
-  // Simple local AI suggestion based on keywords
+
   useEffect(() => {
     if (form.type === 'expense' && form.description.length > 2) {
       const lower = form.description.toLowerCase();
@@ -78,9 +78,9 @@ export default function Transactions() {
     let ok = false;
     if (editing) {
       await updateTransaction(editing, payload);
-      ok = true; // updateTransaction shows its own error toast
+      ok = true;
     } else {
-      ok = await addTransaction(payload); // returns true on success, false on failure
+      ok = await addTransaction(payload);
     }
     setSubmitting(false);
     if (ok) {
@@ -93,7 +93,7 @@ export default function Transactions() {
 
   const typeCats = categories.filter((c) => c.type === form.type);
 
-  // Filter & search
+
   const filtered = transactions.filter((t) => {
     const matchType = filter === 'all' || t.type === filter;
     const matchSearch = !search || t.description?.toLowerCase().includes(search.toLowerCase());
@@ -105,14 +105,14 @@ export default function Transactions() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-cc-forest">Transactions</h1>
-          <p className="text-sm text-cc-muted">Log income &amp; expenses · AI category suggestions</p>
+          <p className="text-sm text-cc-muted">Log income and expenses with AI category suggestions</p>
         </div>
         <Button onClick={openAdd} className="!rounded-xl">
           <Plus className="w-4 h-4" /> Add Transaction
         </Button>
       </div>
 
-      {/* Filters + Search */}
+
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex gap-2">
           {['all', 'income', 'expense'].map((f) => (
@@ -139,7 +139,7 @@ export default function Transactions() {
         </div>
       </div>
 
-      {/* Quick-Add Form */}
+
       {showForm && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 relative animate-fade-in">
           <button type="button" className="absolute right-4 top-4 text-cc-muted hover:text-cc-forest" onClick={() => setShowForm(false)}>
@@ -186,7 +186,7 @@ export default function Transactions() {
                   onClick={applyAi}
                   className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold bg-cc-mint text-cc-forest px-3 py-1.5 rounded-full hover:bg-cc-lime hover:text-white transition"
                 >
-                  <Sparkles className="w-3.5 h-3.5" /> AI suggests: {aiHint.name} — Apply
+                  <Sparkles className="w-3.5 h-3.5" /> AI suggests: {aiHint.name}. Apply
                 </button>
               )}
             </div>
@@ -198,7 +198,7 @@ export default function Transactions() {
                 onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
                 className="mt-1 w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-cc-lime"
               >
-                <option value="">Select…</option>
+                <option value="">Select...</option>
                 {typeCats.map((c) => (
                   <option key={c._id || c.id} value={c._id || c.id}>
                     {c.icon} {c.name}
@@ -225,7 +225,7 @@ export default function Transactions() {
         </div>
       )}
 
-      {/* Transactions Table */}
+
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {filtered.length === 0 ? (
           <p className="text-sm text-cc-muted text-center p-8">
@@ -248,7 +248,7 @@ export default function Transactions() {
                 {filtered.map((t) => (
                   <tr key={getId(t)} className="border-t border-gray-50 hover:bg-cc-mint-soft/50">
                     <td className="px-4 py-3 text-cc-muted whitespace-nowrap">
-                      {t.date ? new Date(t.date).toLocaleDateString() : '—'}
+                      {t.date ? new Date(t.date).toLocaleDateString() : '-'}
                     </td>
                     <td className="px-4 py-3 font-medium">{t.description}</td>
                     <td className="px-4 py-3">

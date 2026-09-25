@@ -1,4 +1,4 @@
-/** Format amounts as Pakistani Rupees (Rs). */
+
 export function formatPkr(amount, { signed = false, decimals = 0 } = {}) {
   const n = Number(amount);
   const value = Number.isFinite(n) ? n : 0;

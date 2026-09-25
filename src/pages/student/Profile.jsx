@@ -21,7 +21,7 @@ export default function Profile() {
   const onFile = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    // Demo: pretend we parsed N rows
+
     importCsv(12);
     e.target.value = '';
   };

@@ -17,7 +17,7 @@ export default function AdminDashboard() {
     <div className="animate-fade-in space-y-6 max-w-5xl">
       <div>
         <h1 className="text-2xl font-extrabold text-cc-forest">Admin Dashboard</h1>
-        <p className="text-sm text-cc-muted">Platform oversight — users, categories, announcements, usage</p>
+        <p className="text-sm text-cc-muted">Platform oversight for users, categories, announcements, and usage</p>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((c) => (

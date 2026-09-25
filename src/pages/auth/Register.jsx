@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, ArrowRight, GraduationCap } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Logo } from '../../components/Logo';
 import { Button } from '../../components/Button';
 import { useApp } from '../../context/AppContext';
@@ -8,6 +9,7 @@ import api from '../../api';
 
 export default function Register() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { setRole, showToast, setProfile } = useApp();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -30,9 +32,9 @@ export default function Register() {
         email: form.email,
         password: form.password,
       };
-      
+
       const res = await api.post('/api/auth/register', payload);
-      
+
       if (res.data.success) {
         const profileRes = await api.get('/api/users/profile');
         if (profileRes.data.success) {
@@ -52,12 +54,12 @@ export default function Register() {
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-br from-cc-mint-soft to-white animate-fade-in">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-br from-cc-mint-soft to-cc-cream animate-fade-in">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
         <div className="text-center mb-8">
           <Logo className="justify-center mb-4" />
-          <h1 className="text-2xl font-extrabold text-cc-forest">Create your account</h1>
-          <p className="text-sm text-cc-muted mt-1">Start tracking smarter in under a minute</p>
+          <h1 className="text-2xl font-extrabold text-cc-forest">{t('auth.registerTitle')}</h1>
+          <p className="text-sm text-cc-muted mt-1">{t('auth.registerSub')}</p>
         </div>
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm text-center">
@@ -66,9 +68,9 @@ export default function Register() {
         )}
         <form onSubmit={handleSubmit} className="space-y-3.5">
           {[
-            { icon: User, label: 'Full name', key: 'name', type: 'text', placeholder: 'Ayesha Khan' },
-            { icon: Mail, label: 'Email', key: 'email', type: 'email', placeholder: 'you@campus.edu' },
-            { icon: Lock, label: 'Password', key: 'password', type: 'password', placeholder: '••••••••' },
+            { icon: User, label: t('auth.name'), key: 'name', type: 'text', placeholder: 'Ayesha Khan' },
+            { icon: Mail, label: t('auth.email'), key: 'email', type: 'email', placeholder: 'you@campus.edu' },
+            { icon: Lock, label: t('auth.password'), key: 'password', type: 'password', placeholder: '••••••••' },
           ].map(({ icon: Icon, label, key, type, placeholder }) => (
             <div key={key}>
               <label className="text-xs font-semibold text-cc-muted uppercase tracking-wide">{label}</label>
@@ -112,11 +114,11 @@ export default function Register() {
             </div>
           </div>
           <Button type="submit" disabled={loading} className="w-full !rounded-xl !py-3 mt-2">
-            {loading ? 'Creating Account...' : <><span className="mr-2">Get Started Free</span> <ArrowRight className="w-4 h-4" /></>}
+            {loading ? t('auth.creating') : <><span className="mr-2">{t('common.getStartedFree')}</span> <ArrowRight className="w-4 h-4" /></>}
           </Button>
         </form>
         <p className="text-center text-sm text-cc-muted mt-6">
-          Already have an account?{' '}
+          {t('auth.haveAccount')}{' '}
           <Link to="/login" className="font-semibold text-cc-forest hover:text-cc-lime">
             Login
           </Link>

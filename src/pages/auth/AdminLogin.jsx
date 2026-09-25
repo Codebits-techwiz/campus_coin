@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Shield, Lock, Mail, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Logo } from '../../components/Logo';
 import { Button } from '../../components/Button';
 import { useApp } from '../../context/AppContext';
@@ -8,6 +9,7 @@ import api from '../../api';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { setRole, showToast, setProfile } = useApp();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,12 +23,12 @@ export default function AdminLogin() {
 
     try {
       const res = await api.post('/api/auth/admin-login', { email, password });
-      
+
       if (res.data.success) {
         const profileRes = await api.get('/api/users/profile');
         if (profileRes.data.success) {
           setProfile(profileRes.data.data);
-          setRole(profileRes.data.data.role); // should be 'admin'
+          setRole(profileRes.data.data.role);
           showToast(res.data.message || 'Admin session started', 'success');
           navigate('/admin');
         }
@@ -46,8 +48,8 @@ export default function AdminLogin() {
             <Shield className="w-7 h-7" />
           </div>
           <Logo className="justify-center mb-2" />
-          <h1 className="text-xl font-extrabold text-cc-forest">Administrator Login</h1>
-          <p className="text-sm text-cc-muted mt-1">Direct access — separate from student portal</p>
+          <h1 className="text-xl font-extrabold text-cc-forest">{t('auth.adminTitle')}</h1>
+          <p className="text-sm text-cc-muted mt-1">{t('auth.adminSub')}</p>
         </div>
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm text-center">
@@ -56,7 +58,7 @@ export default function AdminLogin() {
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-xs font-semibold text-cc-muted uppercase">Admin email</label>
+            <label className="text-xs font-semibold text-cc-muted uppercase">{t('auth.email')}</label>
             <div className="mt-1 relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cc-muted" />
               <input
@@ -69,7 +71,7 @@ export default function AdminLogin() {
             </div>
           </div>
           <div>
-            <label className="text-xs font-semibold text-cc-muted uppercase">Password</label>
+            <label className="text-xs font-semibold text-cc-muted uppercase">{t('auth.password')}</label>
             <div className="mt-1 relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cc-muted" />
               <input
@@ -82,7 +84,7 @@ export default function AdminLogin() {
             </div>
           </div>
           <Button type="submit" disabled={loading} className="w-full !rounded-xl !py-3">
-            {loading ? 'Entering...' : <><span className="mr-2">Enter Control Panel</span> <ArrowRight className="w-4 h-4" /></>}
+            {loading ? t('auth.entering') : <><span className="mr-2">{t('auth.enterPanel')}</span> <ArrowRight className="w-4 h-4" /></>}
           </Button>
         </form>
         <p className="text-[11px] text-center text-cc-muted mt-4 bg-cc-mint rounded-lg py-2">

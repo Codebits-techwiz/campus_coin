@@ -35,7 +35,7 @@ export function AdminLayout() {
     } catch (err) {
       console.error('Logout error', err);
     }
-    setProfile?.(null); // optional chaining in case setProfile is missing in context here, though it should exist
+    setProfile?.(null);
     setRole('public');
     navigate('/');
   };

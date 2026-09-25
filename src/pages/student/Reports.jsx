@@ -23,15 +23,15 @@ const COLORS = ['#5CB85C', '#0B3D2E', '#F5C518', '#3D9B3D', '#95cea4', '#145A43'
 
 export default function Reports() {
   const { showToast } = useApp();
-  
-  const [range, setRange] = useState('2026-09'); // Assuming September 2026 for now
-  
+
+  const [range, setRange] = useState('2026-09');
+
   const [categoryBreakdown, setCategoryBreakdown] = useState([]);
   const [trend6Months, setTrend6Months] = useState([]);
   const [dailyWeekly, setDailyWeekly] = useState({ dailyAverage: 0, weeklyAverage: 0 });
   const [loading, setLoading] = useState(false);
   const [sharing, setSharing] = useState(false);
-  
+
   useEffect(() => {
     const fetchReports = async () => {
       setLoading(true);
@@ -41,13 +41,13 @@ export default function Reports() {
           api.get(`/api/reports/trend-6months?month=${range}`),
           api.get(`/api/reports/daily-weekly?month=${range}`)
         ]);
-        
+
         if (catRes.data.success && catRes.data.data && catRes.data.data.categories) {
-          // Format for PieChart: name, value
+
           setCategoryBreakdown(catRes.data.data.categories.map(d => ({ name: d.name || d.categoryId, value: d.total })));
         }
         if (trendRes.data.success) {
-          // Format for BarChart: month, income, expense
+
           setTrend6Months(trendRes.data.data.map(d => ({ month: d._id, income: d.income, expense: d.expense })));
         }
         if (dwRes.data.success) {
@@ -58,7 +58,7 @@ export default function Reports() {
       }
       setLoading(false);
     };
-    
+
     fetchReports();
   }, [range]);
 
@@ -97,7 +97,7 @@ export default function Reports() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-cc-forest">Monthly Reports</h1>
-          <p className="text-sm text-cc-muted">Category breakdown · trends · export</p>
+          <p className="text-sm text-cc-muted">Category breakdown, trends, and export</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -129,7 +129,7 @@ export default function Reports() {
           <option value="2026-07">July 2026</option>
         </select>
       </div>
-      
+
       {loading ? (
          <div className="text-center py-10 text-cc-muted text-sm">Loading reports...</div>
       ) : (
