@@ -58,17 +58,17 @@ function PhoneMockup() {
   ];
 
   return (
-    <div className="relative mx-auto w-[262px] sm:w-[286px] animate-float">
-      <div className="absolute -inset-12 bg-gradient-to-br from-cc-lime/30 via-cc-forest/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+    <div className="relative mx-auto w-65.5 sm:w-71.5 animate-float">
+      <div className="absolute -inset-12 bg-linear-to-br from-cc-lime/30 via-cc-forest/15 to-transparent rounded-full blur-3xl pointer-events-none" />
 
       {/* Phone bezel */}
-      <div className="relative rounded-[2.6rem] bg-gradient-to-b from-[#243d34] via-[#0B3D2E] to-[#062820] p-[3px] shadow-[0_32px_70px_-14px_rgba(11,61,46,0.6)]">
+      <div className="relative rounded-[2.6rem] bg-linear-to-b from-[#243d34] via-cc-forest to-[#062820] p-0.75 shadow-[0_32px_70px_-14px_rgba(11,61,46,0.6)]">
         <div className="rounded-[2.45rem] bg-[#F7FBF8] overflow-hidden">
           {/* Status bar */}
-          <div className="relative bg-gradient-to-b from-cc-forest to-[#0f4a38] px-5 pt-3.5 pb-6 text-white">
+          <div className="relative bg-linear-to-b from-cc-forest to-[#0f4a38] px-5 pt-3.5 pb-6 text-white">
             <div className="flex items-center justify-between text-[10px] text-white/70 mb-4 px-0.5">
               <span className="font-semibold tracking-wide">9:41</span>
-              <div className="absolute left-1/2 -translate-x-1/2 top-2.5 w-[72px] h-[22px] bg-black/45 rounded-full shadow-inner" />
+              <div className="absolute left-1/2 -translate-x-1/2 top-2.5 w-18 h-5.5 bg-black/45 rounded-full shadow-inner" />
               <span className="font-medium tracking-wide flex items-center gap-1">
                 5G
                 <span className="inline-flex gap-0.5 items-end h-2.5">
@@ -100,7 +100,7 @@ function PhoneMockup() {
               </p>
               <div className="mt-3 flex items-center gap-2">
                 <div className="flex-1 h-1.5 rounded-full bg-white/15 overflow-hidden">
-                  <div className="h-full w-[62%] rounded-full bg-gradient-to-r from-cc-lime to-[#8fd98f]" />
+                  <div className="h-full w-[62%] rounded-full bg-linear-to-r from-cc-lime to-[#8fd98f]" />
                 </div>
                 <p className="text-[10px] text-cc-lime font-semibold whitespace-nowrap">+{formatPkr(4200)}</p>
               </div>
@@ -171,16 +171,16 @@ function SpendingCard() {
   ];
 
   return (
-    <div className="absolute -left-2 sm:-left-20 lg:-left-24 top-[42%] -translate-y-1/2 w-[190px] sm:w-[210px] bg-white/95 backdrop-blur-md rounded-3xl shadow-[0_20px_50px_-15px_rgba(11,61,46,0.28)] border border-white p-4 animate-float-alt z-20">
+    <div className="absolute -left-2 sm:-left-20 lg:-left-24 top-[42%] -translate-y-1/2 w-47.5 sm:w-52.5 bg-white/95 backdrop-blur-md rounded-3xl shadow-[0_20px_50px_-15px_rgba(11,61,46,0.28)] border border-white p-4 animate-float-alt z-20">
       <div className="flex items-center justify-between mb-3">
         <p className="text-[12px] font-extrabold text-cc-forest">Monthly Spending</p>
         <span className="text-[9px] font-bold text-cc-lime bg-cc-mint px-2 py-0.5 rounded-full">-12%</span>
       </div>
-      <div className="flex items-end gap-1.5 h-[72px] mb-3.5 px-0.5">
+      <div className="flex items-end gap-1.5 h-18 mb-3.5 px-0.5">
         {bars.map((b, i) => (
           <div key={`${b.label}-${i}`} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
             <div
-              className={`w-full rounded-t-md transition-all ${b.active ? 'bg-gradient-to-t from-cc-forest to-cc-lime shadow-sm' : 'bg-gradient-to-t from-cc-lime/50 to-cc-lime/85'}`}
+              className={`w-full rounded-t-md transition-all ${b.active ? 'bg-linear-to-t from-cc-forest to-cc-lime shadow-sm' : 'bg-linear-to-t from-cc-lime/50 to-cc-lime/85'}`}
               style={{ height: `${b.h}%` }}
             />
             <span className={`text-[9px] font-medium ${b.active ? 'text-cc-forest' : 'text-cc-muted'}`}>{b.label}</span>
@@ -202,7 +202,7 @@ function SpendingCard() {
 
 function InsightChip() {
   return (
-    <div className="absolute -right-1 sm:right-0 top-8 sm:top-10 z-20 animate-float-alt max-w-[168px]">
+    <div className="absolute -right-1 sm:right-0 top-8 sm:top-10 z-20 animate-float-alt max-w-42">
       <div className="flex items-start gap-2 bg-white rounded-2xl shadow-[0_12px_32px_-8px_rgba(11,61,46,0.22)] border border-cc-mint px-3 py-2.5">
         <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-cc-mint text-cc-lime">
           <Sparkles className="w-3.5 h-3.5" />
@@ -227,7 +227,7 @@ export default function Home() {
   return (
     <div className="animate-fade-in">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-cc-mint-soft via-white to-cc-mint pt-12 pb-20 lg:pt-16 lg:pb-28">
+      <section className="relative overflow-hidden bg-linear-to-br from-cc-mint-soft via-white to-cc-mint pt-12 pb-20 lg:pt-16 lg:pb-28">
         <div className="absolute top-20 right-0 w-96 h-96 bg-cc-lime/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-cc-forest/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -246,12 +246,12 @@ export default function Home() {
               Track allowance, expenses, and savings goals built for campus life — with AI insights that speak your language. No bank account required.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
-              <Button onClick={() => navigate('/register')} className="!rounded-full !px-7 !py-3.5 w-full sm:w-auto">
+              <Button onClick={() => navigate('/register')} className="rounded-full! px-7! py-3.5! w-full sm:w-auto">
                 Get Started Free <ArrowRight className="w-4 h-4" />
               </Button>
               <Button
                 variant="outline"
-                className="!rounded-full !px-7 !py-3.5 w-full sm:w-auto"
+                className="rounded-full! px-7! py-3.5! w-full sm:w-auto"
                 onClick={() => navigate('/how-it-works')}
               >
                 See how it works
@@ -270,7 +270,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative flex justify-center lg:justify-end min-h-[460px] sm:min-h-[480px] items-center">
+          <div className="relative flex justify-center lg:justify-end min-h-115 sm:min-h-120 items-center">
             <SpendingCard />
             <PhoneMockup />
             <InsightChip />
@@ -317,11 +317,11 @@ export default function Home() {
       <section className="py-20 lg:py-28 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="relative order-2 lg:order-1">
-            <div className="absolute -inset-4 bg-cc-mint rounded-[2rem] -rotate-2" />
+            <div className="absolute -inset-4 bg-cc-mint rounded-4xl -rotate-2" />
             <img
               src={IMG.study}
               alt="Students collaborating on campus"
-              className="relative rounded-[1.75rem] w-full h-[360px] sm:h-[440px] object-cover shadow-xl"
+              className="relative rounded-[1.75rem] w-full h-90 sm:h-110 object-cover shadow-xl"
             />
             <div className="absolute -bottom-5 -right-2 sm:right-6 bg-white rounded-2xl shadow-lg border border-gray-100 px-4 py-3 flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-cc-mint flex items-center justify-center">
@@ -355,7 +355,7 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <Button className="!rounded-full mt-2" onClick={() => navigate('/register')}>
+            <Button className="rounded-full! mt-2" onClick={() => navigate('/register')}>
               Create free account <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
@@ -419,9 +419,9 @@ export default function Home() {
             <img
               src={IMG.laptop}
               alt="Student reviewing finances on laptop"
-              className="rounded-[1.75rem] w-full h-[320px] sm:h-[400px] object-cover shadow-xl"
+              className="rounded-[1.75rem] w-full h-80 sm:h-100 object-cover shadow-xl"
             />
-            <div className="absolute inset-0 rounded-[1.75rem] bg-gradient-to-t from-cc-forest/50 via-transparent to-transparent" />
+            <div className="absolute inset-0 rounded-[1.75rem] bg-linear-to-t from-cc-forest/50 via-transparent to-transparent" />
             <div className="absolute bottom-5 left-5 right-5 bg-white/95 backdrop-blur rounded-2xl p-4 shadow-lg">
               <p className="text-xs font-bold text-cc-muted uppercase tracking-wide mb-2">Income vs Expense</p>
               <div className="flex items-end gap-2 h-16">
@@ -441,9 +441,9 @@ export default function Home() {
             <img
               src={IMG.cafe}
               alt="Student studying with coffee"
-              className="rounded-[1.75rem] w-full h-[320px] sm:h-[400px] object-cover shadow-xl"
+              className="rounded-[1.75rem] w-full h-80 sm:h-100 object-cover shadow-xl"
             />
-            <div className="absolute top-5 left-5 bg-white rounded-2xl shadow-lg px-4 py-3 max-w-[200px]">
+            <div className="absolute top-5 left-5 bg-white rounded-2xl shadow-lg px-4 py-3 max-w-50">
               <div className="flex items-center gap-2 mb-1">
                 <Bot className="w-4 h-4 text-cc-lime" />
                 <span className="text-xs font-bold text-cc-forest">AI Insight</span>
@@ -504,7 +504,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <Button className="mt-8 !rounded-full" onClick={() => navigate('/register')}>
+              <Button className="mt-8 rounded-full!" onClick={() => navigate('/register')}>
                 Start Tracking Now <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
@@ -537,7 +537,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="absolute -bottom-4 -right-2 sm:-right-6 bg-white rounded-2xl shadow-lg border border-cc-lime/30 p-4 max-w-[220px] animate-float">
+              <div className="absolute -bottom-4 -right-2 sm:-right-6 bg-white rounded-2xl shadow-lg border border-cc-lime/30 p-4 max-w-55 animate-float">
                 <div className="flex items-center gap-2 mb-2">
                   <Bot className="w-4 h-4 text-cc-lime" />
                   <span className="text-xs font-bold text-cc-forest">AI Insight</span>
@@ -567,9 +567,9 @@ export default function Home() {
               { icon: Bus, title: 'Commuters', desc: 'Bus passes vs ride-shares: see what actually saves money.', img: IMG.campus },
               { icon: BookOpen, title: 'Part-timers', desc: 'Log gig pay and scholarships next to everyday spending.', img: IMG.library },
             ].map((item) => (
-              <div key={item.title} className="group relative overflow-hidden rounded-2xl h-[280px]">
+              <div key={item.title} className="group relative overflow-hidden rounded-2xl h-70">
                 <img src={item.img} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-cc-forest via-cc-forest/50 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-cc-forest via-cc-forest/50 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-5 text-white">
                   <item.icon className="w-6 h-6 text-cc-lime mb-2" />
                   <h3 className="font-bold text-lg">{item.title}</h3>
@@ -659,7 +659,7 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <Button className="w-full !rounded-full mt-8 !py-3.5" onClick={() => navigate('/register')}>
+            <Button className="w-full rounded-full! mt-8 py-3.5!" onClick={() => navigate('/register')}>
               Get Started Free <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
@@ -692,7 +692,7 @@ export default function Home() {
       </section>
 
       {/* Full-bleed image CTA */}
-      <section className="relative h-[380px] sm:h-[440px] overflow-hidden">
+      <section className="relative h-95 sm:h-110 overflow-hidden">
         <img src={IMG.walk} alt="Campus graduation moment" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-cc-forest/75" />
         <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center text-white">
@@ -702,7 +702,7 @@ export default function Home() {
           <p className="mt-4 text-white/80 max-w-lg">
             Join thousands of students building calmer money habits — one tap at a time.
           </p>
-          <Button variant="white" className="!rounded-full !px-8 mt-8" onClick={() => navigate('/register')}>
+          <Button variant="white" className="rounded-full! px-8! mt-8" onClick={() => navigate('/register')}>
             Join Campus Coin <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
@@ -762,7 +762,7 @@ export default function Home() {
                 placeholder="you@campus.edu"
                 className="flex-1 px-4 py-3 rounded-full border border-gray-200 text-sm outline-none focus:border-cc-lime"
               />
-              <Button type="submit" className="!rounded-full !px-6">
+              <Button type="submit" className="rounded-full! px-6!">
                 Subscribe
               </Button>
             </form>
@@ -783,7 +783,7 @@ export default function Home() {
               </p>
             </div>
             <div className="relative z-10 flex flex-col items-center gap-2">
-              <Button variant="white" className="!rounded-full !px-8" onClick={() => navigate('/register')}>
+              <Button variant="white" className="rounded-full! px-8!" onClick={() => navigate('/register')}>
                 Get Started Free <ArrowRight className="w-4 h-4" />
               </Button>
               <p className="font-hand text-xl text-cc-lime hidden sm:block">Small steps · Big goals →</p>
