@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom';
 import { Map } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { PageHero } from '../../components/PageHero';
+import { useApp } from '../../context/AppContext';
 
 export default function Sitemap() {
   const { t } = useTranslation();
+  const { openChat } = useApp();
 
   const sections = [
     {
@@ -15,7 +17,7 @@ export default function Sitemap() {
         { to: '/how-it-works', labelKey: 'nav.howItWorks' },
         { to: '/pricing', labelKey: 'nav.pricing' },
         { to: '/testimonials', labelKey: 'nav.testimonials' },
-        { to: '/faq', labelKey: 'nav.faq' },
+        { action: 'faq', labelKey: 'nav.faq' },
         { to: '/sitemap', labelKey: 'nav.sitemap' },
       ],
     },
@@ -74,14 +76,25 @@ export default function Sitemap() {
                 </h2>
                 <ul className="space-y-2.5">
                   {sec.links.map((l) => (
-                    <li key={l.to}>
-                      <Link
-                        to={l.to}
-                        className="text-sm text-cc-muted hover:text-cc-lime font-medium transition flex items-center gap-2"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-cc-lime" />
-                        {l.labelKey ? t(l.labelKey) : l.label}
-                      </Link>
+                    <li key={l.to || l.action}>
+                      {l.action === 'faq' ? (
+                        <button
+                          type="button"
+                          onClick={openChat}
+                          className="text-sm text-cc-muted hover:text-cc-lime font-medium transition flex items-center gap-2"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-cc-lime" />
+                          {l.labelKey ? t(l.labelKey) : l.label}
+                        </button>
+                      ) : (
+                        <Link
+                          to={l.to}
+                          className="text-sm text-cc-muted hover:text-cc-lime font-medium transition flex items-center gap-2"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-cc-lime" />
+                          {l.labelKey ? t(l.labelKey) : l.label}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>

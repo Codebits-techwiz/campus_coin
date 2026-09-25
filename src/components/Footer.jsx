@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Logo } from './Logo';
+import { useApp } from '../context/AppContext';
 
 function IconX({ className = 'w-4 h-4' }) {
   return (
@@ -49,13 +50,13 @@ const footerLinkDefs = [
   { key: 'howItWorks', to: '/how-it-works' },
   { key: 'pricing', to: '/pricing' },
   { key: 'testimonials', to: '/testimonials' },
-  { key: 'faq', to: '/faq' },
   { key: 'login', to: '/login' },
   { key: 'signUp', to: '/register' },
 ];
 
 export function Footer() {
   const { t } = useTranslation();
+  const { openChat } = useApp();
 
   return (
     <footer className="bg-cc-forest text-white mt-auto">
@@ -91,6 +92,13 @@ export function Footer() {
                   {t(`nav.${l.key}`)}
                 </Link>
               ))}
+              <button
+                type="button"
+                onClick={openChat}
+                className="hover:text-cc-lime transition whitespace-nowrap"
+              >
+                {t('nav.faq')}
+              </button>
             </nav>
           </div>
         </div>

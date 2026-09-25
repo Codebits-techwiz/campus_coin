@@ -12,7 +12,6 @@ const navLinkDefs = [
   { key: 'howItWorks', to: '/how-it-works' },
   { key: 'pricing', to: '/pricing' },
   { key: 'testimonials', to: '/testimonials' },
-  { key: 'faq', to: '/faq' },
 ];
 
 export function Navbar() {
@@ -21,7 +20,12 @@ export function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const { darkMode, setDarkMode } = useApp();
+  const { darkMode, setDarkMode, openChat, chatOpen } = useApp();
+
+  const handleFaqClick = () => {
+    setOpen(false);
+    openChat();
+  };
 
   const isActive = (to) => {
     if (to === '/') return location.pathname === '/';
@@ -49,6 +53,13 @@ export function Navbar() {
               {t(`nav.${l.key}`)}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={handleFaqClick}
+            className={`transition ${chatOpen ? 'text-cc-forest font-semibold' : 'hover:text-cc-forest'}`}
+          >
+            {t('nav.faq')}
+          </button>
         </nav>
 
         <div className="hidden sm:flex items-center gap-2">
@@ -148,6 +159,15 @@ export function Navbar() {
               {t(`nav.${l.key}`)}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={handleFaqClick}
+            className={`block w-full py-2.5 text-left font-medium ${
+              chatOpen ? 'text-cc-forest' : 'text-cc-ink'
+            }`}
+          >
+            {t('nav.faq')}
+          </button>
           <div className="pt-3 border-t border-gray-100 flex gap-3">
             <Link
               to="/login"

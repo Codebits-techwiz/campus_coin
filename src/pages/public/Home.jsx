@@ -25,6 +25,7 @@ import {
   User,
   Trophy,
   Plus,
+  MessageCircle,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,6 +33,7 @@ import { Button } from '../../components/Button';
 import { Logo } from '../../components/Logo';
 import { features, testimonials, faqItems } from '../../data/mockData';
 import { formatPkr } from '../../utils/currency';
+import { useApp } from '../../context/AppContext';
 
 const iconMap = {
   wallet: Wallet,
@@ -506,6 +508,7 @@ function HeroDashboard() {
 export default function Home() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { openChat } = useApp();
   const [openFaq, setOpenFaq] = useState(0);
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -1042,6 +1045,14 @@ export default function Home() {
           <div className="text-center mb-12">
             <span className="text-cc-lime text-xs font-bold tracking-widest uppercase">{t('home.faqEyebrow')}</span>
             <h2 className="text-3xl font-extrabold text-cc-forest mt-2">{t('home.faqTitle')}</h2>
+            <button
+              type="button"
+              onClick={openChat}
+              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cc-forest hover:text-cc-lime transition"
+            >
+              <MessageCircle className="w-4 h-4" />
+              {t('home.faqChatCta')}
+            </button>
           </div>
           <div className="space-y-3">
             {faqItems.map((item, i) => (

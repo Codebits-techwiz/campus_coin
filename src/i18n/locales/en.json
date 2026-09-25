@@ -136,6 +136,16 @@
     "title": "Frequently asked questions",
     "subtitle": "Quick answers about Campus Coin, privacy, PKR budgets, and AI tips."
   },
+  "chatbot": {
+    "title": "Campus Coin FAQ",
+    "subtitle": "Quick answers — pick a question",
+    "welcome": "Hi! Ask a common question below, or type something related to Campus Coin FAQs.",
+    "placeholder": "Type a FAQ question…",
+    "pickSuggested": "I can answer the suggested FAQs for now. Please tap one of the questions above.",
+    "open": "Open FAQ chat",
+    "close": "Close chat",
+    "send": "Send"
+  },
   "sitemapPage": {
     "eyebrow": "Sitemap",
     "title": "Application sitemap",
@@ -264,6 +274,7 @@
     "testimonialsTitle": "What Our Students Say",
     "faqEyebrow": "FAQ",
     "faqTitle": "Frequently Asked Questions",
+    "faqChatCta": "Open FAQ chat",
     "ctaTitle": "This semester, know where every rupee goes",
     "ctaSub": "Join thousands of students building calmer money habits, one tap at a time.",
     "joinCampus": "Join Campus Coin",

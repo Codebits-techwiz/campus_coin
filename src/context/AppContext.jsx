@@ -31,6 +31,11 @@ export function AppProvider({ children }) {
   const [announcements, setAnnouncements] = useState([]);
   const [profile, setProfile] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [chatOpen, setChatOpen] = useState(false);
+
+  const openChat = useCallback(() => setChatOpen(true), []);
+  const closeChat = useCallback(() => setChatOpen(false), []);
+  const toggleChat = useCallback(() => setChatOpen((v) => !v), []);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -415,6 +420,10 @@ export function AppProvider({ children }) {
     monthExpense,
     balance: monthIncome - monthExpense,
     suggestCategory,
+    chatOpen,
+    openChat,
+    closeChat,
+    toggleChat,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
