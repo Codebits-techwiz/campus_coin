@@ -1,0 +1,209 @@
+import { useState } from 'react';
+import { Target, Bell, Plus, Trash2, CheckCheck } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
+import { Button } from '../../components/Button';
+
+export default function Budgets() {
+  const {
+    budgets,
+    addBudget,
+    deleteBudget,
+    categories,
+    monthSpent,
+    notifications,
+    unreadCount,
+    markNotificationRead,
+    showToast,
+  } = useApp();
+
+  const [categoryId, setCategoryId] = useState('');
+  const [limit, setLimit] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  const currentMonth = new Date().toISOString().slice(0, 7);
+  const monthLabel = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+
+  const expenseCats = categories.filter((c) => c.type === 'expense');
+
+  const getId = (b) => b._id || b.id;
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    const ok = await addBudget({
+      category: categoryId,          // MongoDB _id of the category
+      month: currentMonth,           // e.g. "2026-09"
+      limitAmount: Number(limit),    // backend expects limitAmount
+    });
+    setSubmitting(false);
+    if (ok) {
+      setCategoryId('');
+      setLimit('');
+    }
+  };
+
+  // Notifications are budget_alert or anomaly type
+  const budgetNotifs = notifications.filter(
+    (n) => n.type === 'budget_alert' || n.type === 'anomaly'
+  );
+
+  return (
+    <div className="animate-fade-in space-y-6 max-w-4xl">
+      <div>
+        <h1 className="text-2xl font-extrabold text-cc-forest flex items-center gap-2">
+          <Target className="w-7 h-7 text-cc-lime" /> Budget Goals &amp; Alerts
+        </h1>
+        <p className="text-sm text-cc-muted mt-1">
+          Set monthly caps per category and watch real-time progress
+        </p>
+      </div>
+
+      {/* Notification Alerts from backend */}
+      {budgetNotifs.length > 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-2">
+          <div className="flex items-center justify-between mb-1">
+            <p className="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+              <Bell className="w-4 h-4" /> Budget Notifications
+              {unreadCount > 0 && (
+                <span className="bg-amber-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                  {unreadCount} new
+                </span>
+              )}
+            </p>
+          </div>
+          {budgetNotifs.map((n) => (
+            <div
+              key={n._id || n.id}
+              className={`flex items-start justify-between gap-3 px-3 py-2 rounded-xl text-xs ${
+                n.isRead ? 'bg-white text-cc-muted' : 'bg-amber-100 text-amber-900 font-medium'
+              }`}
+            >
+              <div>
+                <p className="font-semibold">{n.title}</p>
+                <p>{n.message}</p>
+              </div>
+              {!n.isRead && (
+                <button
+                  type="button"
+                  onClick={() => markNotificationRead(n._id || n.id)}
+                  className="shrink-0 text-amber-600 hover:text-amber-800"
+                  title="Mark as read"
+                >
+                  <CheckCheck className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Add Budget Form */}
+      <form
+        onSubmit={submit}
+        className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm flex flex-wrap gap-4 items-end"
+      >
+        <div className="flex-1 min-w-[160px]">
+          <label className="text-xs font-semibold text-cc-muted uppercase">Category</label>
+          <select
+            required
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            className="mt-1 w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-cc-lime"
+          >
+            <option value="">Select…</option>
+            {expenseCats.map((c) => (
+              <option key={c._id || c.id} value={c._id || c.id}>
+                {c.icon} {c.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="w-36">
+          <label className="text-xs font-semibold text-cc-muted uppercase">Monthly Limit ($)</label>
+          <input
+            type="number"
+            step="0.01"
+            min="1"
+            required
+            value={limit}
+            onChange={(e) => setLimit(e.target.value)}
+            className="mt-1 w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-cc-lime"
+          />
+        </div>
+        <Button type="submit" disabled={submitting} className="!rounded-xl">
+          <Plus className="w-4 h-4" /> {submitting ? 'Saving…' : 'Save Budget'}
+        </Button>
+      </form>
+
+      {/* Budget List */}
+      <div className="space-y-4">
+        {budgets.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-8 text-center text-sm text-cc-muted">
+            No budgets yet. Set a monthly spending limit above!
+          </div>
+        ) : (
+          budgets.map((b) => {
+            // Backend returns currentSpent and limitAmount
+            const spent = b.currentSpent ?? monthSpent(b.category?._id || b.categoryId);
+            const lim   = b.limitAmount ?? b.limit ?? 1;
+            const pct   = Math.min(100, Math.round((spent / lim) * 100));
+            const near  = pct >= 80;
+            const over  = spent >= lim;
+            const catName = b.category?.name || b.category || '—';
+            const catIcon = b.category?.icon || '';
+
+            return (
+              <div key={getId(b)} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                  <div>
+                    <h3 className="font-bold text-cc-forest">
+                      {catIcon} {catName}
+                    </h3>
+                    <p className="text-xs text-cc-muted">{monthLabel}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      <p className="font-extrabold text-cc-ink">
+                        ${Number(spent || 0).toFixed(2)}{' '}
+                        <span className="text-cc-muted font-medium text-sm">
+                          / ${Number(lim).toFixed(2)}
+                        </span>
+                      </p>
+                      {near && (
+                        <span
+                          className={`inline-flex items-center gap-1 text-xs font-bold mt-1 ${
+                            over ? 'text-red-600' : 'text-amber-600'
+                          }`}
+                        >
+                          <Bell className="w-3.5 h-3.5" />
+                          {over ? 'Over budget' : `Near limit (${pct}%)`}
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => deleteBudget(getId(b))}
+                      className="p-1.5 text-cc-muted hover:text-red-500 transition"
+                      title="Remove budget"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+                <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all ${
+                      over ? 'bg-red-500' : near ? 'bg-amber-400' : 'bg-cc-lime'
+                    }`}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+                <p className="text-xs text-cc-muted mt-2">{pct}% consumed</p>
+              </div>
+            );
+          })
+        )}
+      </div>
+    </div>
+  );
+}

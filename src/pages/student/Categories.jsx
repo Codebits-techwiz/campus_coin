@@ -1,0 +1,153 @@
+import { useState } from 'react';
+import { Plus, Pencil, Trash2, X } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
+import { Button } from '../../components/Button';
+
+export default function Categories() {
+  const { categories, addCategory, updateCategory, deleteCategory } = useApp();
+  const [show, setShow] = useState(false);
+  const [editId, setEditId] = useState(null);
+  const [form, setForm] = useState({ name: '', type: 'expense', icon: '📁', color: '#6B7280' });
+  const [loading, setLoading] = useState(false);
+
+  // Backend uses _id, so we normalise
+  const getId = (c) => c._id || c.id;
+
+  const personal = categories.filter((c) => !c.isDefault);
+  const defaults = categories.filter((c) => c.isDefault);
+
+  const openAdd = () => {
+    setEditId(null);
+    setForm({ name: '', type: 'expense', icon: '📁', color: '#6B7280' });
+    setShow(true);
+  };
+
+  const openEdit = (c) => {
+    setEditId(getId(c));
+    setForm({ name: c.name, type: c.type, icon: c.icon || '📁', color: c.color || '#6B7280' });
+    setShow(true);
+  };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if (editId) await updateCategory(editId, form);
+    else await addCategory(form);
+    setLoading(false);
+    setShow(false);
+  };
+
+  const CatList = ({ items, allowEdit }) => (
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      {items.map((c) => (
+        <div key={getId(c)} className="bg-white border border-gray-100 rounded-xl p-4 flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-3">
+            <span
+              className="w-9 h-9 rounded-lg flex items-center justify-center text-lg"
+              style={{ backgroundColor: c.color ? `${c.color}20` : '#f0fdf4' }}
+            >
+              {c.icon || '📁'}
+            </span>
+            <div>
+              <p className="font-semibold text-cc-forest">{c.name}</p>
+              <p className="text-xs text-cc-muted capitalize">{c.type} · {c.isDefault ? 'Default' : 'Personal'}</p>
+            </div>
+          </div>
+          {allowEdit && (
+            <div className="flex gap-1">
+              <button type="button" onClick={() => openEdit(c)} className="p-1.5 text-cc-muted hover:text-cc-lime">
+                <Pencil className="w-4 h-4" />
+              </button>
+              <button type="button" onClick={() => deleteCategory(getId(c))} className="p-1.5 text-cc-muted hover:text-red-500">
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <div className="animate-fade-in space-y-8 max-w-5xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-extrabold text-cc-forest">Manage Categories</h1>
+          <p className="text-sm text-cc-muted">Defaults plus your personal income &amp; expense categories</p>
+        </div>
+        <Button onClick={openAdd} className="!rounded-xl">
+          <Plus className="w-4 h-4" /> Add Personal Category
+        </Button>
+      </div>
+
+      {show && (
+        <form onSubmit={submit} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-md flex flex-wrap gap-4 items-end relative">
+          <button type="button" className="absolute right-3 top-3" onClick={() => setShow(false)}>
+            <X className="w-4 h-4 text-cc-muted" />
+          </button>
+          <div className="flex-1 min-w-[160px]">
+            <label className="text-xs font-semibold text-cc-muted uppercase">Name</label>
+            <input
+              required
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className="mt-1 w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-cc-lime"
+            />
+          </div>
+          <div className="w-36">
+            <label className="text-xs font-semibold text-cc-muted uppercase">Icon</label>
+            <input
+              value={form.icon}
+              onChange={(e) => setForm({ ...form, icon: e.target.value })}
+              className="mt-1 w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-cc-lime"
+              placeholder="🍕"
+            />
+          </div>
+          <div className="w-32">
+            <label className="text-xs font-semibold text-cc-muted uppercase">Color</label>
+            <div className="mt-1 flex items-center gap-2">
+              <input
+                type="color"
+                value={form.color}
+                onChange={(e) => setForm({ ...form, color: e.target.value })}
+                className="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer p-0.5"
+              />
+              <span className="text-xs text-cc-muted">{form.color}</span>
+            </div>
+          </div>
+          <div className="w-40">
+            <label className="text-xs font-semibold text-cc-muted uppercase">Type</label>
+            <select
+              value={form.type}
+              onChange={(e) => setForm({ ...form, type: e.target.value })}
+              className="mt-1 w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"
+            >
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+          <Button type="submit" disabled={loading} className="!rounded-xl">
+            {loading ? 'Saving...' : editId ? 'Save' : 'Create'}
+          </Button>
+        </form>
+      )}
+
+      <section>
+        <h2 className="font-bold text-cc-forest mb-3">Your Personal Categories</h2>
+        {personal.length === 0 ? (
+          <p className="text-sm text-cc-muted bg-white rounded-xl border border-dashed border-gray-200 p-6 text-center">
+            No personal categories yet. Add ones like &ldquo;Campus Cafe&rdquo; or &ldquo;Freelance&rdquo;.
+          </p>
+        ) : (
+          <CatList items={personal} allowEdit />
+        )}
+      </section>
+
+      <section>
+        <h2 className="font-bold text-cc-forest mb-3">System Default Categories</h2>
+        <p className="text-xs text-cc-muted mb-3">Provided to all students — view only (admin can edit defaults)</p>
+        <CatList items={defaults} allowEdit={false} />
+      </section>
+    </div>
+  );
+}

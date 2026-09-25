@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cc-forest: #0B3D2E;
+  --color-cc-forest-light: #145A43;
+  --color-cc-lime: #5CB85C;
+  --color-cc-lime-dark: #3D9B3D;
+  --color-cc-mint: #E8F5E9;
+  --color-cc-mint-soft: #F0FAF2;
+  --color-cc-ink: #1A2E28;
+  --color-cc-muted: #5A6B64;
+  --color-cc-cream: #FAFCFB;
+  --color-cc-gold: #F5C518;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Caveat", cursive;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-cc-ink);
+  background: #ffffff;
+  margin: 0;
+  min-height: 100vh;
+}
+
+body.dark-mode {
+  background: #0f1f1a;
+  color: #e8f0ec;
+}
+
+body.font-lg {
+  font-size: 112.5%;
+}
+
+body.font-sm {
+  font-size: 90%;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f5f2;
+}
+::-webkit-scrollbar-thumb {
+  background: #95cea4;
+  border-radius: 4px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+.animate-float {
+  animation: floatSlow 4s ease-in-out infinite;
+}
+.font-hand {
+  font-family: var(--font-hand);
+}
+
+.dark-mode .bg-white {
+  background-color: #152820 !important;
+}
+.dark-mode .bg-cc-cream,
+.dark-mode .bg-cc-mint-soft,
+.dark-mode .bg-cc-mint,
+.dark-mode .bg-gray-50 {
+  background-color: #1a3228 !important;
+}
+.dark-mode .text-cc-ink {
+  color: #e8f0ec !important;
+}
+.dark-mode .text-cc-muted {
+  color: #a8bdb4 !important;
+}
+.dark-mode .border-gray-100,
+.dark-mode .border-gray-200,
+.dark-mode .border-cc-mint {
+  border-color: #2a4538 !important;
+}
+.dark-mode .shadow-sm,
+.dark-mode .shadow-md,
+.dark-mode .shadow-lg,
+.dark-mode .shadow-xl {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35) !important;
+}
