@@ -94,11 +94,6 @@ export default function Login() {
             {t('nav.signUp')}
           </Link>
         </p>
-        <p className="text-center text-xs text-cc-muted mt-4">
-          <Link to="/admin-login" className="font-semibold text-cc-lime hover:underline">
-            {t('auth.adminTitle')}
-          </Link>
-        </p>
       </div>
     </div>
   );

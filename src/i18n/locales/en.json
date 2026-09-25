@@ -201,6 +201,21 @@
     "registerSub": "Start tracking campus money in PKR",
     "name": "Full name",
     "confirmPassword": "Confirm password",
+    "academicYear": "Academic year",
+    "monthlyAllowance": "Monthly allowance (PKR)",
+    "savingsGoal": "Savings goal (PKR)",
+    "passwordHint": "Min 8 chars, upper + lower + number + special character",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "passwordMatch": "Passwords match",
+    "passwordRules": {
+      "title": "Password must include",
+      "minLength": "At least 8 characters",
+      "upper": "One uppercase letter (A–Z)",
+      "lower": "One lowercase letter (a–z)",
+      "number": "One number (0–9)",
+      "special": "One special character (!@#$…)"
+    },
     "creating": "Creating Account...",
     "haveAccount": "Already have an account?",
     "forgotTitle": "Reset password",
@@ -211,7 +226,15 @@
     "adminTitle": "Admin login",
     "adminSub": "Direct access, separate from student portal",
     "entering": "Entering...",
-    "enterPanel": "Enter Control Panel"
+    "enterPanel": "Enter Control Panel",
+    "errors": {
+      "required": "This field is required.",
+      "nameInvalid": "Use letters only, with single spaces between names (e.g. Ayesha Khan).",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordWeak": "Password needs 8+ chars, uppercase, lowercase, a number, and a special character.",
+      "passwordMismatch": "Passwords do not match.",
+      "numberInvalid": "Enter a valid non-negative number."
+    }
   },
   "home": {
     "badge": "Your Money",
