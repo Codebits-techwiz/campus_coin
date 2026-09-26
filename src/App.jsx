@@ -11,6 +11,7 @@ import Pricing from './pages/public/Pricing';
 import Testimonials from './pages/public/Testimonials';
 import Faq from './pages/public/Faq';
 import Sitemap from './pages/public/Sitemap';
+import BackendBlueprint from './pages/public/BackendBlueprint';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -66,6 +67,7 @@ function AppRoutes() {
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/sitemap" element={<Sitemap />} />
+          <Route path="/backend-blueprint" element={<BackendBlueprint />} />
           <Route
             path="/login"
             element={<RedirectIfLoggedIn to={<Login />} />}
