@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Logo } from '../../components/Logo';
 import { Button } from '../../components/Button';
 import { useApp } from '../../context/AppContext';
 import api from '../../api';
 
 export default function ForgotPassword() {
+  const { t } = useTranslation();
   const { showToast } = useApp();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
@@ -22,8 +24,8 @@ export default function ForgotPassword() {
       const res = await api.post('/api/auth/forgot-password', { email });
       if (res.data.success) {
         setSent(true);
-        // The demo text says it sends a reset token in response.
-        // If we needed to auto-redirect, we could use res.data.data.token, but usually you wait for the user to check their email.
+
+
         showToast(res.data.message || 'Password reset link sent', 'success');
       }
     } catch (err) {
@@ -34,7 +36,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-br from-cc-mint-soft to-white animate-fade-in">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-br from-cc-mint-soft to-cc-cream animate-fade-in">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
         <Logo className="justify-center mb-6" />
         {sent ? (
@@ -45,14 +47,14 @@ export default function ForgotPassword() {
               We sent a tokenized reset link to <strong>{email}</strong>.
             </p>
             <Link to="/login" className="inline-flex items-center gap-2 text-sm font-semibold text-cc-lime">
-              <ArrowLeft className="w-4 h-4" /> Back to login
+              <ArrowLeft className="w-4 h-4" /> {t('auth.backToLogin')}
             </Link>
           </div>
         ) : (
           <>
-            <h1 className="text-2xl font-extrabold text-cc-forest text-center">Reset password</h1>
+            <h1 className="text-2xl font-extrabold text-cc-forest text-center">{t('auth.forgotTitle')}</h1>
             <p className="text-sm text-cc-muted text-center mt-1 mb-6">
-              Enter your email and we&apos;ll send a recovery link
+              {t('auth.forgotSub')}
             </p>
             {error && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm text-center">
@@ -61,7 +63,7 @@ export default function ForgotPassword() {
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-cc-muted uppercase tracking-wide">Email</label>
+                <label className="text-xs font-semibold text-cc-muted uppercase tracking-wide">{t('auth.email')}</label>
                 <div className="mt-1.5 relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cc-muted" />
                   <input
@@ -74,11 +76,11 @@ export default function ForgotPassword() {
                 </div>
               </div>
               <Button type="submit" disabled={loading} className="w-full !rounded-xl !py-3">
-                {loading ? 'Sending...' : 'Send reset link'}
+                {loading ? t('auth.sending') : t('auth.sendLink')}
               </Button>
             </form>
             <Link to="/login" className="mt-6 flex items-center justify-center gap-2 text-sm font-semibold text-cc-muted hover:text-cc-forest">
-              <ArrowLeft className="w-4 h-4" /> Back to login
+              <ArrowLeft className="w-4 h-4" /> {t('auth.backToLogin')}
             </Link>
           </>
         )}

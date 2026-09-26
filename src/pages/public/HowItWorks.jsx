@@ -1,35 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Bot } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/Button';
 import { PageHero } from '../../components/PageHero';
 
-const steps = [
-  {
-    n: '1',
-    title: 'Create Your Account',
-    desc: 'Sign up with your campus email and set your monthly allowance baseline in PKR.',
-  },
-  {
-    n: '2',
-    title: 'Add Your Transactions',
-    desc: 'Quick-add income and expenses — AI suggests categories as you type.',
-  },
-  {
-    n: '3',
-    title: 'See Your Insights',
-    desc: 'Review charts, budgets, and plain-language saving tips every month.',
-  },
-];
-
 export default function HowItWorks() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const steps = [
+    { n: '1', title: t('howItWorks.steps.1.title'), desc: t('howItWorks.steps.1.desc') },
+    { n: '2', title: t('howItWorks.steps.2.title'), desc: t('howItWorks.steps.2.desc') },
+    { n: '3', title: t('howItWorks.steps.3.title'), desc: t('howItWorks.steps.3.desc') },
+  ];
 
   return (
     <div className="animate-fade-in min-h-[70vh]">
       <PageHero
-        eyebrow="How It Works"
-        title="Get started in 3 simple steps"
-        subtitle="From signup to your first AI tip — Campus Coin keeps the flow simple for busy students."
+        eyebrow={t('howItWorks.eyebrow')}
+        title={t('howItWorks.title')}
+        subtitle={t('howItWorks.subtitle')}
       />
 
       <section className="py-16 sm:py-20 bg-cc-mint-soft">
@@ -50,7 +40,7 @@ export default function HowItWorks() {
                 ))}
               </div>
               <Button className="mt-8 !rounded-full" onClick={() => navigate('/register')}>
-                Start Tracking Now <ArrowRight className="w-4 h-4" />
+                {t('common.startTracking')} <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
 
@@ -60,21 +50,20 @@ export default function HowItWorks() {
                   <div className="w-3 h-3 rounded-full bg-red-400" />
                   <div className="w-3 h-3 rounded-full bg-amber-400" />
                   <div className="w-3 h-3 rounded-full bg-cc-lime" />
-                  <span className="ml-2 text-xs text-cc-muted font-medium">Campus Coin Dashboard</span>
+                  <span className="ml-2 text-xs text-cc-muted font-medium">{t('home.dashboardTitle')}</span>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-cc-mint rounded-xl p-4 flex flex-col items-center justify-center">
                     <div className="w-24 h-24 rounded-full border-8 border-cc-lime border-t-cc-forest flex items-center justify-center">
                       <div className="text-center">
-                        <p className="text-[10px] text-cc-muted">Spent</p>
+                        <p className="text-[10px] text-cc-muted">{t('home.spent')}</p>
                         <p className="font-extrabold text-cc-forest text-sm">Rs 28,250</p>
                       </div>
                     </div>
-                    <p className="text-xs font-semibold text-cc-forest mt-2">Spending Overview</p>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-xs font-bold text-cc-muted uppercase">Recent</p>
-                    {['Food · Rs 450', 'Transport · Rs 200', 'Academics · Rs 3,500'].map((r) => (
+                    <p className="text-xs font-bold text-cc-muted uppercase">{t('home.recent')}</p>
+                    {[t('home.txFood'), t('home.txTransport'), t('home.txAcademics')].map((r) => (
                       <div key={r} className="bg-gray-50 rounded-lg px-3 py-2 text-xs font-medium text-cc-ink">
                         {r}
                       </div>
@@ -85,10 +74,10 @@ export default function HowItWorks() {
               <div className="absolute -bottom-4 -right-2 sm:-right-6 bg-white rounded-2xl shadow-lg border border-cc-lime/30 p-4 max-w-[220px]">
                 <div className="flex items-center gap-2 mb-2">
                   <Bot className="w-4 h-4 text-cc-lime" />
-                  <span className="text-xs font-bold text-cc-forest">AI Insight</span>
+                  <span className="text-xs font-bold text-cc-forest">{t('home.aiInsightShort')}</span>
                 </div>
-                <p className="text-xs text-cc-muted leading-relaxed">
-                  Food delivery rose 40% this month. Try a Rs 2,000 weekly cap to save ~Rs 3,500.
+                <p className="text-xs text-cc-muted leading-relaxed" dir="auto">
+                  {t('home.aiInsightBody')}
                 </p>
               </div>
             </div>

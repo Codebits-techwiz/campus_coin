@@ -28,47 +28,36 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminCategories from './pages/admin/AdminCategories';
 import AdminAnnouncements from './pages/admin/AdminAnnouncements';
 import AdminStats from './pages/admin/AdminStats';
+import { PageLoader, RouteLoader } from './components/PageLoader';
 
-// Auth guard: waits for session check before rendering protected routes
 function RequireStudent() {
   const { role, authLoading } = useApp();
-  if (authLoading) return <FullPageLoader />;
+  if (authLoading) return <PageLoader />;
   if (role !== 'student') return <Navigate to="/login" replace />;
   return <StudentLayout />;
 }
 
 function RequireAdmin() {
   const { role, authLoading } = useApp();
-  if (authLoading) return <FullPageLoader />;
+  if (authLoading) return <PageLoader />;
   if (role !== 'admin') return <Navigate to="/admin-login" replace />;
   return <AdminLayout />;
 }
 
-// Redirect already-logged-in users away from auth pages
 function RedirectIfLoggedIn({ to }) {
   const { role, authLoading } = useApp();
-  if (authLoading) return <FullPageLoader />;
+  if (authLoading) return <PageLoader />;
   if (role === 'student') return <Navigate to="/app" replace />;
   if (role === 'admin') return <Navigate to="/admin" replace />;
   return to;
 }
 
-function FullPageLoader() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-cc-mint-soft">
-      <div className="text-center space-y-4">
-        <div className="w-12 h-12 border-4 border-cc-lime border-t-transparent rounded-full animate-spin mx-auto" />
-        <p className="text-sm text-cc-muted font-medium">Loading Campus Coin…</p>
-      </div>
-    </div>
-  );
-}
-
 function AppRoutes() {
   return (
     <BrowserRouter>
+      <RouteLoader />
       <Routes>
-        {/* Public routes */}
+
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/features" element={<Features />} />
@@ -96,7 +85,7 @@ function AppRoutes() {
           />
         </Route>
 
-        {/* Protected: Student */}
+
         <Route path="/app" element={<RequireStudent />}>
           <Route index element={<Dashboard />} />
           <Route path="transactions" element={<Transactions />} />
@@ -108,7 +97,7 @@ function AppRoutes() {
           <Route path="profile" element={<Profile />} />
         </Route>
 
-        {/* Protected: Admin */}
+
         <Route path="/admin" element={<RequireAdmin />}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<AdminUsers />} />

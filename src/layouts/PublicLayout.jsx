@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { Toast } from '../components/Toast';
+import { FaqChatbot } from '../components/FaqChatbot';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -21,6 +22,7 @@ export function PublicLayout() {
         <Outlet />
       </main>
       <Footer />
+      <FaqChatbot />
       <Toast />
     </div>
   );

@@ -37,13 +37,13 @@ export default function Insights() {
   }, []);
 
   const handleToggleTipPin = async (tipId) => {
-    // Optimistic UI update
+
     setTips(tips.map(t => t._id === tipId ? { ...t, isPinned: !t.isPinned } : t));
     try {
       await api.post(`/api/ai/saving-tips/${tipId}/pin`);
     } catch (err) {
       showToast('Failed to pin tip', 'error');
-      // Revert on failure
+
       setTips(tips.map(t => t._id === tipId ? { ...t, isPinned: !t.isPinned } : t));
     }
   };
@@ -64,14 +64,14 @@ export default function Insights() {
   };
 
   const handleDismissTip = async (tipId) => {
-    // Optimistic UI update
+
     const previous = [...tips];
     setTips(tips.filter(t => t._id !== tipId));
     try {
       await api.post(`/api/ai/saving-tips/${tipId}/dismiss`);
     } catch (err) {
       showToast('Failed to dismiss tip', 'error');
-      // Revert on failure
+
       setTips(previous);
     }
   };
@@ -128,7 +128,7 @@ export default function Insights() {
       <section className="space-y-4">
         <h2 className="font-bold text-cc-forest">Personalized Saving Tips</h2>
         <p className="text-xs text-cc-muted -mt-2">Actionable tips based on your spending history</p>
-        
+
         {loadingTips ? (
            <div className="flex items-center justify-center py-10 bg-white border border-gray-100 rounded-2xl shadow-sm">
               <Loader2 className="w-6 h-6 animate-spin text-cc-lime" />

@@ -33,11 +33,11 @@ export const initialTransactions = [
   { id: 't2', type: 'expense', categoryId: 'c6', category: 'Food', amount: 450, description: 'Campus Cafe lunch', date: '2026-09-22', recurring: false, aiSuggested: 'Food' },
   { id: 't3', type: 'expense', categoryId: 'c7', category: 'Transport', amount: 200, description: 'Bus pass top-up', date: '2026-09-21', recurring: false, aiSuggested: 'Transport' },
   { id: 't4', type: 'expense', categoryId: 'c10', category: 'Subscriptions', amount: 599, description: 'Spotify Student', date: '2026-09-20', recurring: true, aiSuggested: 'Subscriptions' },
-  { id: 't5', type: 'expense', categoryId: 'c9', category: 'Academics', amount: 3500, description: 'Textbook – Data Structures', date: '2026-09-18', recurring: false, aiSuggested: 'Academics' },
+  { id: 't5', type: 'expense', categoryId: 'c9', category: 'Academics', amount: 3500, description: 'Textbook - Data Structures', date: '2026-09-18', recurring: false, aiSuggested: 'Academics' },
   { id: 't6', type: 'income', categoryId: 'c2', category: 'Part-time Job', amount: 8000, description: 'Cafe weekend shifts', date: '2026-09-15', recurring: false, aiSuggested: null },
   { id: 't7', type: 'expense', categoryId: 'c11', category: 'Entertainment', amount: 1500, description: 'Movie with friends', date: '2026-09-14', recurring: false, aiSuggested: 'Entertainment' },
   { id: 't8', type: 'expense', categoryId: 'c8', category: 'Hostel/Rent', amount: 18000, description: 'September hostel fee', date: '2026-09-05', recurring: true, aiSuggested: 'Hostel/Rent' },
-  { id: 't9', type: 'expense', categoryId: 'c6', category: 'Food', amount: 850, description: 'Food delivery – late night', date: '2026-09-12', recurring: false, aiSuggested: 'Food' },
+  { id: 't9', type: 'expense', categoryId: 'c6', category: 'Food', amount: 850, description: 'Food delivery - late night', date: '2026-09-12', recurring: false, aiSuggested: 'Food' },
   { id: 't10', type: 'expense', categoryId: 'c7', category: 'Transport', amount: 450, description: 'Careem to library', date: '2026-09-10', recurring: false, aiSuggested: 'Transport' },
   { id: 't11', type: 'income', categoryId: 'c4', category: 'Gift', amount: 5000, description: 'Birthday gift from uncle', date: '2026-09-08', recurring: false, aiSuggested: null },
   { id: 't12', type: 'expense', categoryId: 'c12', category: 'Miscellaneous', amount: 300, description: 'Laundry tokens', date: '2026-09-07', recurring: false, aiSuggested: 'Miscellaneous' },
@@ -56,7 +56,7 @@ export const initialInsights = [
     id: 'i1',
     month: '2026-09',
     summary: 'Food delivery spending rose 40% this month compared to your usual average. Transport stayed steady, and hostel remains your largest fixed cost.',
-    tip: 'Try a weekly food delivery cap of Rs 2,000 — cooking 2 campus meals yourself could save ~Rs 3,500 this month.',
+    tip: 'Try a weekly food delivery cap of Rs 2,000. Cooking 2 campus meals yourself could save about Rs 3,500 this month.',
     generatedAt: '2026-09-24T10:00:00',
     pinned: true,
   },
@@ -64,17 +64,17 @@ export const initialInsights = [
     id: 'i2',
     month: '2026-08',
     summary: 'You stayed under budget in Transport and Entertainment. Subscriptions were on track. Food was slightly over.',
-    tip: 'Pin your meal plan days — students who plan 3 dinners/week cut food spend by ~18%.',
+    tip: 'Pin your meal plan days. Students who plan 3 dinners a week cut food spend by about 18%.',
     generatedAt: '2026-08-31T10:00:00',
     pinned: false,
   },
 ];
 
 export const initialTips = [
-  { id: 'tip1', text: 'Your Food spend is 52% of this month’s expense budget — consider packing lunch twice a week.', impact: 'high', pinned: true, dismissed: false },
-  { id: 'tip2', text: 'Spotify + other subscriptions total ~Rs 600/mo. Check if any unused apps can be paused.', impact: 'medium', pinned: false, dismissed: false },
-  { id: 'tip3', text: 'You’re Rs 2,400 away from your Rs 10,000 savings goal this month. Skip one outing to close the gap.', impact: 'high', pinned: false, dismissed: false },
-  { id: 'tip4', text: 'Bus pass top-ups beat ride-shares for campus trips — you already do this well. Keep it up!', impact: 'low', pinned: false, dismissed: false },
+  { id: 'tip1', text: 'Your Food spend is 52% of this month\'s expense budget. Consider packing lunch twice a week.', impact: 'high', pinned: true, dismissed: false },
+  { id: 'tip2', text: 'Spotify and other subscriptions total about Rs 600 a month. Check if any unused apps can be paused.', impact: 'medium', pinned: false, dismissed: false },
+  { id: 'tip3', text: 'You are Rs 2,400 away from your Rs 10,000 savings goal this month. Skip one outing to close the gap.', impact: 'high', pinned: false, dismissed: false },
+  { id: 'tip4', text: 'Bus pass top-ups beat ride-shares for campus trips. You already do this well. Keep it up!', impact: 'low', pinned: false, dismissed: false },
 ];
 
 export const adminUsers = [
@@ -88,32 +88,32 @@ export const adminUsers = [
 export const announcements = [
   { id: 'a1', title: 'Welcome to Campus Coin!', body: 'Start by logging your first allowance and setting a Food budget in PKR.', active: true, createdAt: '2026-09-01' },
   { id: 'a2', title: 'Midterm savings tip', body: 'Students who set Academics budgets before midterms report less stress spending.', active: true, createdAt: '2026-09-10' },
-  { id: 'a3', title: 'CSV import now available', body: 'Upload past transactions from your bank CSV in Profile → Import.', active: false, createdAt: '2026-08-20' },
+  { id: 'a3', title: 'CSV import now available', body: 'Upload past transactions from your bank CSV in Profile > Import.', active: false, createdAt: '2026-08-20' },
 ];
 
 export const testimonials = [
-  { name: 'Ali Raza', role: 'University Student', quote: 'Finally an app that gets student life. Logging canteen food takes seconds, and the tips actually make sense.', avatar: 'https://i.pravatar.cc/150?img=12', rating: 5 },
-  { name: 'Sara Ahmed', role: 'Hostel Resident', quote: 'The budget alerts saved me from overspending on food delivery during exam week. Love the AI insights!', avatar: 'https://i.pravatar.cc/150?img=9', rating: 5 },
-  { name: 'Omar Farooq', role: 'Part-time Worker', quote: 'I track my gig income and scholarships in one place. Charts are clear and no bank linking needed.', avatar: 'https://i.pravatar.cc/150?img=15', rating: 5 },
+  { id: 'ali', name: 'Ali Raza', roleKey: 'testimonials.ali.role', quoteKey: 'testimonials.ali.quote', avatar: 'https://i.pravatar.cc/150?img=12', rating: 5 },
+  { id: 'sara', name: 'Sara Ahmed', roleKey: 'testimonials.sara.role', quoteKey: 'testimonials.sara.quote', avatar: 'https://i.pravatar.cc/150?img=9', rating: 5 },
+  { id: 'omar', name: 'Omar Farooq', roleKey: 'testimonials.omar.role', quoteKey: 'testimonials.omar.quote', avatar: 'https://i.pravatar.cc/150?img=15', rating: 5 },
 ];
 
 export const features = [
-  { title: 'Track Income & Expenses', desc: 'Log allowance, gig pay, food, transport, and more in seconds — no bank account required.', icon: 'wallet' },
-  { title: 'Smart Categories', desc: 'Student-focused categories for hostel, academics, subscriptions, and entertainment.', icon: 'layout' },
-  { title: 'AI Assistant', desc: 'Get automatic category suggestions as you type, and override anytime.', icon: 'sparkles' },
-  { title: 'Visual Reports', desc: 'See monthly trends, category breakdowns, and income vs expense at a glance.', icon: 'chart' },
-  { title: 'Personalized Saving Tips', desc: 'Tips ranked by impact, based on your own history and budget goals.', icon: 'lightbulb' },
-  { title: 'Access Anywhere', desc: 'Responsive web app that works smoothly on phone, tablet, and desktop.', icon: 'smartphone' },
+  { id: 'track', titleKey: 'features.items.track.title', descKey: 'features.items.track.desc', icon: 'wallet' },
+  { id: 'categories', titleKey: 'features.items.categories.title', descKey: 'features.items.categories.desc', icon: 'layout' },
+  { id: 'ai', titleKey: 'features.items.ai.title', descKey: 'features.items.ai.desc', icon: 'sparkles' },
+  { id: 'reports', titleKey: 'features.items.reports.title', descKey: 'features.items.reports.desc', icon: 'chart' },
+  { id: 'tips', titleKey: 'features.items.tips.title', descKey: 'features.items.tips.desc', icon: 'lightbulb' },
+  { id: 'access', titleKey: 'features.items.access.title', descKey: 'features.items.access.desc', icon: 'smartphone' },
 ];
 
 export const faqItems = [
-  { q: 'Do I need to link a bank account?', a: 'No. Campus Coin is built for manual entry and optional CSV import — no bank integration required.' },
-  { q: 'Is the AI advice financial advice?', a: 'No. AI categorization and insights are suggestions you can review or override — not certified financial advice.' },
-  { q: 'Can I set budgets per category?', a: 'Yes. Set monthly limits in PKR (e.g. Food Rs 12,000) and get in-app alerts when you near or exceed them.' },
-  { q: 'Who can use the admin panel?', a: 'Administrators manage default categories, announcements, users, and platform usage statistics.' },
+  { id: 'bank', qKey: 'faq.bank.q', aKey: 'faq.bank.a' },
+  { id: 'ai', qKey: 'faq.ai.q', aKey: 'faq.ai.a' },
+  { id: 'budgets', qKey: 'faq.budgets.q', aKey: 'faq.budgets.a' },
+  { id: 'admin', qKey: 'faq.admin.q', aKey: 'faq.admin.a' },
 ];
 
-/** Simple keyword → category hints for mock AI */
+
 export const aiCategoryHints = [
   { keywords: ['cafe', 'lunch', 'dinner', 'food', 'pizza', 'delivery', 'canteen', 'restaurant'], category: 'Food' },
   { keywords: ['bus', 'uber', 'taxi', 'metro', 'transport', 'fuel', 'ride', 'careem'], category: 'Transport' },

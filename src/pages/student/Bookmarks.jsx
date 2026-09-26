@@ -83,7 +83,7 @@ export default function Bookmarks() {
           {bookmarks.map((b) => {
             const isTip = b.refType === 'tip';
             const title = isTip ? 'Saving Tip' : 'Monthly Insight';
-            
+
             let contentText = 'Content unavailable';
             if (isTip && b.tip) contentText = b.tip.text;
             if (!isTip && b.insight) contentText = b.insight.text;

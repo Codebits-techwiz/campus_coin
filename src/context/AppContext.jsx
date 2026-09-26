@@ -16,7 +16,7 @@ import {
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
-  const [role, setRole] = useState('public'); // public | student | admin
+  const [role, setRole] = useState('public');
   const [toast, setToast] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [txPagination, setTxPagination] = useState({ total: 0, page: 1, pages: 1 });
@@ -29,8 +29,13 @@ export function AppProvider({ children }) {
   const [tips, setTips] = useState(initialTips);
   const [users, setUsers] = useState(seedUsers);
   const [announcements, setAnnouncements] = useState([]);
-  const [profile, setProfile] = useState(null); // start as null instead of mock
-  const [authLoading, setAuthLoading] = useState(true); // track initial load
+  const [profile, setProfile] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [chatOpen, setChatOpen] = useState(false);
+
+  const openChat = useCallback(() => setChatOpen(true), []);
+  const closeChat = useCallback(() => setChatOpen(false), []);
+  const toggleChat = useCallback(() => setChatOpen((v) => !v), []);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -38,21 +43,21 @@ export function AppProvider({ children }) {
         const res = await api.get('/api/users/profile');
         if (res.data.success) {
           setProfile(res.data.data);
-          setRole(res.data.data.role); // 'student' or 'admin'
+          setRole(res.data.data.role);
         }
       } catch (err) {
-        // 401 means no valid cookie
+
         setProfile(null);
         setRole('public');
       } finally {
         setAuthLoading(false);
       }
     };
-    
+
     checkSession();
   }, []);
 
-  // Fetch all student data when user logs in
+
   useEffect(() => {
     if (role === 'student' || role === 'admin') {
       const currentMonth = new Date().toISOString().slice(0, 7);
@@ -86,7 +91,7 @@ export function AppProvider({ children }) {
         .then((res) => {
           if (res.data.success) setDashboardSummary(res.data.data);
         })
-        .catch(() => {}); // optional - dashboard summary is a bonus
+        .catch(() => {});
 
       api.get('/api/notifications')
         .then((res) => {
@@ -95,7 +100,7 @@ export function AppProvider({ children }) {
             setUnreadCount(res.data.data.unreadCount ?? 0);
           }
         })
-        .catch(() => {}); // notifications are non-critical
+        .catch(() => {});
 
       api.get('/api/announcements')
         .then((res) => {
@@ -115,11 +120,14 @@ export function AppProvider({ children }) {
     }
   }, [role]);
 
-  const [darkMode, setDarkMode] = useState(false);
-  const [fontSize, setFontSize] = useState('md'); // sm | md | lg
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('cc-theme') === 'dark');
+  const [fontSize, setFontSize] = useState('md');
 
   useEffect(() => {
+    document.documentElement.classList.toggle('dark-mode', darkMode);
     document.body.classList.toggle('dark-mode', darkMode);
+    document.documentElement.style.colorScheme = darkMode ? 'dark' : 'light';
+    localStorage.setItem('cc-theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
   useEffect(() => {
@@ -140,7 +148,7 @@ export function AppProvider({ children }) {
 
   const addTransaction = async (tx) => {
     try {
-      // Convert YYYY-MM-DD (from HTML date input) to full ISO string
+
       const isoDate = tx.date
         ? new Date(tx.date + 'T00:00:00').toISOString()
         : new Date().toISOString();
@@ -155,7 +163,7 @@ export function AppProvider({ children }) {
       if (res.data.success) {
         setTransactions((prev) => [res.data.data, ...prev]);
         showToast('Transaction added', 'success');
-        return true; // signal success to caller
+        return true;
       } else {
         showToast(res.data.error || 'Failed to add transaction', 'error');
         return false;
@@ -180,7 +188,7 @@ export function AppProvider({ children }) {
       if (updates.categoryId !== undefined) payload.category = updates.categoryId;
       if (updates.type !== undefined) payload.type = updates.type;
       if (updates.date !== undefined) {
-        // Convert YYYY-MM-DD to ISO string if needed
+
         const d = updates.date;
         payload.date = d.includes('T') ? d : new Date(d + 'T00:00:00').toISOString();
       }
@@ -348,7 +356,7 @@ export function AppProvider({ children }) {
     showToast(`Imported ${count} transactions from CSV (demo)`, 'success');
   };
 
-  const currentMonth = new Date().toISOString().slice(0, 7); // e.g. '2026-09'
+  const currentMonth = new Date().toISOString().slice(0, 7);
 
   const monthSpent = (categoryId) =>
     transactions
@@ -412,6 +420,10 @@ export function AppProvider({ children }) {
     monthExpense,
     balance: monthIncome - monthExpense,
     suggestCategory,
+    chatOpen,
+    openChat,
+    closeChat,
+    toggleChat,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
