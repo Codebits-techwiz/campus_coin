@@ -1,8 +1,10 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 import mongoose from 'mongoose';
 import { Insight } from '../models/Insight.js';
 import { Transaction } from '../models/Transaction.js';
+import { User } from '../models/User.js';
 import { toAmount } from '../utils/money.js';
+import { formatMoney } from '../utils/currency.js';
 
 const userObjId = (id) => new mongoose.Types.ObjectId(id);
 
@@ -15,17 +17,22 @@ const userObjId = (id) => new mongoose.Types.ObjectId(id);
  * 4. Cache result in `insights` collection.
  * 5. Always append disclaimer: "Suggestion, not certified financial advice".
  */
-export const getMonthlyInsights = async (userId, monthStr = null) => {
+export const getMonthlyInsights = async (userId, monthStr = null, force = false) => {
   const targetMonth = monthStr || new Date().toISOString().slice(0, 7);
 
-  // Check cached insight in DB
-  const cached = await Insight.findOne({ user: userId, month: targetMonth });
-  if (cached) {
-    return {
-      ...cached.toObject(),
-      disclaimer: 'Notice: This insight is an advisory suggestion generated based on your spending patterns, not certified financial advice.'
-    };
+  // Check cached insight in DB unless force is true
+  if (!force) {
+    const cached = await Insight.findOne({ user: userId, month: targetMonth });
+    if (cached) {
+      return {
+        ...cached.toObject(),
+        disclaimer: 'Notice: This insight is an advisory suggestion generated based on your spending patterns, not certified financial advice.'
+      };
+    }
   }
+
+  const user = await User.findById(userId);
+  const currencyCode = user ? user.currency : 'USD';
 
   // STEP 1: Compute Aggregate Facts
   const startOfMonth = new Date(`${targetMonth}-01T00:00:00.000Z`);
@@ -113,9 +120,7 @@ export const getMonthlyInsights = async (userId, monthStr = null) => {
   const apiKey = process.env.GEMINI_API_KEY;
   if (apiKey && apiKey.trim() !== '') {
     try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
+      const ai = new GoogleGenAI({ apiKey });
       const prompt = `You are a friendly student financial assistant for "Campus Coin". 
 Analyze these monthly spending facts for a college student during ${targetMonth}:
 ${JSON.stringify(facts, null, 2)}
@@ -124,8 +129,11 @@ Provide a response in JSON format with two keys:
 1. "summaryText": A 2-sentence plain-language narrative summarizing their spending trends (e.g. highlight any spike like food delivery rising).
 2. "tipText": One specific, simple, actionable saving tip for the student.`;
 
-      const result = await model.generateContent(prompt);
-      const responseText = result.response.text();
+      const response = await ai.models.generateContent({
+        model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+        contents: prompt
+      });
+      const responseText = response.text;
 
       // Extract JSON payload from Gemini response
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
@@ -136,7 +144,7 @@ Provide a response in JSON format with two keys:
         source = 'llm';
       }
     } catch (llmError) {
-      console.warn('[AI Insight LLM Fallback] Gemini API call failed or timed out:', llmError.message);
+      console.warn('[AI Insight LLM Fallback] Gemini API call failed:', llmError);
     }
   }
 
@@ -144,7 +152,7 @@ Provide a response in JSON format with two keys:
   if (!summaryText) {
     if (highestSpikeCategory && maxSpikePercentage > 15) {
       summaryText = `In ${targetMonth}, your spending in ${highestSpikeCategory} rose sharply by ${maxSpikePercentage.toFixed(0)}% compared to your 3-month average.`;
-      tipText = `Try setting a weekly cap of $25 on ${highestSpikeCategory} to get your spending back on track.`;
+      tipText = `Try setting a weekly cap of ${formatMoney(25, currencyCode)} on ${highestSpikeCategory} to get your spending back on track.`;
     } else if (facts.length > 0) {
       summaryText = `In ${targetMonth}, your spending remained stable across your primary categories without major anomalies.`;
       tipText = `Keep up the good habit! Try allocating your extra savings into your monthly goal baseline.`;
@@ -155,17 +163,26 @@ Provide a response in JSON format with two keys:
     source = 'template';
   }
 
-  // STEP 4: Save & Cache Insight in DB
-  const newInsight = await Insight.create({
-    user: userId,
-    month: targetMonth,
-    summaryText,
-    tipText,
-    source
-  });
+  // STEP 4: Save & Cache Insight in DB (upsert to handle forced regeneration)
+  const newInsight = await Insight.findOneAndUpdate(
+    { user: userId, month: targetMonth },
+    { summaryText, tipText, source },
+    { upsert: true, new: true }
+  );
 
   return {
     ...newInsight.toObject(),
     disclaimer: 'Notice: This insight is an advisory suggestion generated based on your spending patterns, not certified financial advice.'
   };
+};
+
+/**
+ * Fetch all historical insights for a user, sorted by month (newest first)
+ */
+export const getInsightsHistory = async (userId) => {
+  const insights = await Insight.find({ user: userId }).sort({ month: -1 });
+  return insights.map((insight) => ({
+    ...insight.toObject(),
+    disclaimer: 'Notice: This insight is an advisory suggestion generated based on your spending patterns, not certified financial advice.'
+  }));
 };

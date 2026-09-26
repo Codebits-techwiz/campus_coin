@@ -7,6 +7,7 @@ import mongoSanitize from 'express-mongo-sanitize';
 
 import { connectDB } from './config/db.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { apiLimiter, authLimiter } from './middleware/rateLimiter.js';
 
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -28,17 +29,30 @@ import { initRecurringCronJob } from './jobs/recurringCron.js';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger.js';
 
-// Load environment variables
+// Load environment variables first — guard runs immediately after
 dotenv.config();
 
+// Refuse to start without a real JWT_SECRET — prevents accidental insecure deployment
+if (!process.env.JWT_SECRET) {
+  console.error('[FATAL] JWT_SECRET is not set. Set it in your .env file and restart.');
+  process.exit(1);
+}
+
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 
 // Security & Utility Middlewares
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: (origin, callback) => {
+      // Allow localhost and local IP network access (dev mode convenience)
+      if (!origin || origin.startsWith('http://localhost:') || origin.startsWith('http://192.168.') || origin.startsWith('http://127.0.0.1:')) {
+        callback(null, true);
+      } else {
+        callback(null, process.env.CLIENT_URL || 'http://localhost:3000');
+      }
+    },
     credentials: true // Allow httpOnly cookies
   })
 );
@@ -48,10 +62,17 @@ app.use(cookieParser());
 // Sanitize inputs against NoSQL injection
 app.use(mongoSanitize());
 
+// Global API rate limiter (100 req / 15 min by default, tune via API_RATE_LIMIT_MAX)
+app.use('/api', apiLimiter);
+
+import mongoose from 'mongoose';
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
   res.status(200).json({
     status: 'online',
+    database: dbStatus,
     app: 'Campus Coin Backend API',
     version: '1.0.0',
     timestamp: new Date().toISOString()
@@ -92,9 +113,15 @@ app.use(errorHandler);
 
 // Connect Database & Start Server
 connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`[Campus Coin API] Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-  });
+  if (process.env.NODE_ENV !== 'test') {
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(
+    `[Campus Coin API] Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`
+  );
 });
+
+  }
+});
+
 
 export default app;

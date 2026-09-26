@@ -159,5 +159,33 @@ export const getDailyWeeklySummaries = async (userId, filters = {}) => {
     });
   });
 
-  return { daily };
+  // Aggregate Weekly (ISO 8601 — weeks start on Monday)
+  const weeklyAgg = await Transaction.aggregate([
+    { $match: matchFilter },
+    {
+      $group: {
+        _id: {
+          isoWeek: { $isoWeek: '$date' },
+          isoWeekYear: { $isoWeekYear: '$date' },
+          type: '$type'
+        },
+        totalCents: { $sum: '$amount' }
+      }
+    },
+    { $sort: { '_id.isoWeekYear': 1, '_id.isoWeek': 1 } }
+  ]);
+
+  const weekly = [];
+  weeklyAgg.forEach((item) => {
+    weekly.push({
+      isoWeek: item._id.isoWeek,
+      isoWeekYear: item._id.isoWeekYear,
+      // Human-readable label: "2026-W39"
+      label: `${item._id.isoWeekYear}-W${String(item._id.isoWeek).padStart(2, '0')}`,
+      type: item._id.type,
+      total: toAmount(item.totalCents)
+    });
+  });
+
+  return { daily, weekly };
 };

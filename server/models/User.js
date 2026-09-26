@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema(
     currency: {
       type: String,
       enum: Object.values(CURRENCIES),
-      default: CURRENCIES.USD
+      default: CURRENCIES.PKR
     },
     isActive: {
       type: Boolean,

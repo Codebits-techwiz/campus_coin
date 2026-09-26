@@ -1,12 +1,13 @@
 import nodemailer from 'nodemailer';
 import { User } from '../models/User.js';
 import { getDashboardSummary } from './dashboardService.js';
+import { formatMoney } from '../utils/currency.js';
 
 /**
  * Configure Nodemailer Transporter
  */
 const createTransporter = () => {
-  return nodemailer.parseTransport({
+  return nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: parseInt(process.env.SMTP_PORT) || 587,
     secure: false,
@@ -48,21 +49,21 @@ export const shareReportViaEmail = async (userId, targetEmail = null, monthStr =
           </tr>
           <tr>
             <td style="padding: 10px; border-bottom: 1px solid #E5E7EB;">Total Income</td>
-            <td style="padding: 10px; text-align: right; color: #10B981; font-weight: bold;">$${summary.totals.income.toFixed(2)}</td>
+            <td style="padding: 10px; text-align: right; color: #10B981; font-weight: bold;">${formatMoney(summary.totals.income, user.currency)}</td>
           </tr>
           <tr>
             <td style="padding: 10px; border-bottom: 1px solid #E5E7EB;">Total Expense</td>
-            <td style="padding: 10px; text-align: right; color: #EF4444; font-weight: bold;">$${summary.totals.expense.toFixed(2)}</td>
+            <td style="padding: 10px; text-align: right; color: #EF4444; font-weight: bold;">${formatMoney(summary.totals.expense, user.currency)}</td>
           </tr>
           <tr style="font-weight: bold; background-color: #F9FAFB;">
             <td style="padding: 10px;">Net Savings / Balance</td>
-            <td style="padding: 10px; text-align: right; color: #4F46E5;">$${summary.totals.balance.toFixed(2)}</td>
+            <td style="padding: 10px; text-align: right; color: #4F46E5;">${formatMoney(summary.totals.balance, user.currency)}</td>
           </tr>
         </table>
 
         ${
           summary.topCategory
-            ? `<p>📌 <strong>Top Expense Category:</strong> ${summary.topCategory.name} ($${summary.topCategory.amount.toFixed(2)})</p>`
+            ? `<p>📌 <strong>Top Expense Category:</strong> ${summary.topCategory.name} (${formatMoney(summary.topCategory.amount, user.currency)})</p>`
             : ''
         }
 

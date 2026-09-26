@@ -2,6 +2,7 @@ import PDFDocument from 'pdfkit';
 import { User } from '../models/User.js';
 import { getDashboardSummary } from './dashboardService.js';
 import { getCategoryBreakdown } from './reportService.js';
+import { formatMoney } from '../utils/currency.js';
 
 /**
  * Generate monthly financial report PDF stream.
@@ -42,9 +43,9 @@ export const generateReportPdfStream = async (userId, res) => {
   doc.moveDown(0.5);
 
   doc.fontSize(11);
-  doc.text(`Total Income: $${summary.totals.income.toFixed(2)}`);
-  doc.text(`Total Expense: $${summary.totals.expense.toFixed(2)}`);
-  doc.text(`Net Balance: $${summary.totals.balance.toFixed(2)}`);
+  doc.text(`Total Income: ${formatMoney(summary.totals.income, user.currency)}`);
+  doc.text(`Total Expense: ${formatMoney(summary.totals.expense, user.currency)}`);
+  doc.text(`Net Balance: ${formatMoney(summary.totals.balance, user.currency)}`);
 
   doc.moveDown();
   doc.strokeColor('#E5E7EB').lineWidth(1).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
@@ -67,7 +68,7 @@ export const generateReportPdfStream = async (userId, res) => {
     breakdown.categories.forEach((cat) => {
       doc.fontSize(10).fillColor('#1F2937');
       doc.text(cat.name, 50, doc.y, { width: 200, continued: true });
-      doc.text(`$${cat.total.toFixed(2)}`, { width: 150, continued: true });
+      doc.text(`${formatMoney(cat.total, user.currency)}`, { width: 150, continued: true });
       doc.text(`${cat.percentage}%`, { width: 100 });
       doc.moveDown(0.3);
     });

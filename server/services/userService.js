@@ -1,6 +1,18 @@
 import { User } from '../models/User.js';
-import { formatUserResponse } from './authService.js';
-import { toCents } from '../utils/money.js';
+import { toCents, toAmount } from '../utils/money.js';
+
+export const formatUserResponse = (user) => {
+  const obj = user.toObject ? user.toObject() : { ...user };
+  if (obj.passwordHash) delete obj.passwordHash;
+  if (obj.resetTokenHash) delete obj.resetTokenHash;
+  if (obj.resetTokenExpires) delete obj.resetTokenExpires;
+  
+  // Convert cents to display dollars
+  if (obj.monthlyAllowanceBaseline !== undefined) obj.monthlyAllowanceBaseline = toAmount(obj.monthlyAllowanceBaseline);
+  if (obj.monthlySavingsGoal !== undefined) obj.monthlySavingsGoal = toAmount(obj.monthlySavingsGoal);
+  
+  return obj;
+};
 
 /**
  * User Service

@@ -3,6 +3,7 @@ import { hashPassword, comparePassword } from '../utils/crypto.js';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { sendResetPasswordEmail } from './emailService.js';
+import { formatUserResponse } from './userService.js';
 
 const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
 
@@ -12,25 +13,25 @@ export const registerUser = async (data) => {
   const passwordHash = await hashPassword(data.password);
   const user = await User.create({ ...data, passwordHash });
   const token = generateToken(user._id);
-  return { user, token };
+  return { user: formatUserResponse(user), token };
 };
 
 export const loginUser = async (email, password) => {
   const user = await User.findOne({ email }).select('+passwordHash');
-  if (!user || !(await comparePassword(password, user.passwordHash))) throw new Error('Invalid credentials');
-  if (user.role === 'admin') throw new Error('Invalid credentials'); // Reject admin accounts
-  user.passwordHash = undefined;
+  if (!user || !(await comparePassword(password, user.passwordHash))) throw new Error('Invalid email or password');
+  if (user.role === 'admin') throw new Error('Invalid email or password'); // Reject admin accounts
+  if (!user.isActive) throw new Error('Invalid email or password'); // Generic — don't reveal disabled state
   const token = generateToken(user._id);
-  return { user, token };
+  return { user: formatUserResponse(user), token };
 };
 
 export const adminLoginUser = async (email, password) => {
   const user = await User.findOne({ email }).select('+passwordHash');
-  if (!user || !(await comparePassword(password, user.passwordHash))) throw new Error('Invalid credentials');
-  if (user.role !== 'admin') throw new Error('Invalid credentials'); // Reject student accounts
-  user.passwordHash = undefined;
+  if (!user || !(await comparePassword(password, user.passwordHash))) throw new Error('Invalid email or password');
+  if (user.role !== 'admin') throw new Error('Invalid email or password'); // Reject student accounts
+  if (!user.isActive) throw new Error('Invalid email or password'); // Generic — don't reveal disabled state
   const token = generateToken(user._id);
-  return { user, token };
+  return { user: formatUserResponse(user), token };
 };
 
 export const forgotPassword = async (email) => {

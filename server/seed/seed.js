@@ -77,6 +77,7 @@ const seedDatabase = async () => {
         academicYear: 'Sophomore',
         monthlyAllowanceBaseline: 150000,
         monthlySavingsGoal: 20000,
+        currency: 'PKR',
       },
       {
         name: 'Jane Smith',
@@ -102,18 +103,18 @@ const seedDatabase = async () => {
 
     // Seed all SRS default categories
     const categoriesData = [
-      { name: 'Allowance', type: 'income', isDefault: true, icon: '💰', color: '#4caf50' },
-      { name: 'Part-time Job', type: 'income', isDefault: true, icon: '💼', color: '#8bc34a' },
-      { name: 'Scholarship', type: 'income', isDefault: true, icon: '🎓', color: '#cddc39' },
-      { name: 'Gift', type: 'income', isDefault: true, icon: '🎁', color: '#ffeb3b' },
-      { name: 'Other Income', type: 'income', isDefault: true, icon: '💵', color: '#ffc107' },
-      { name: 'Food', type: 'expense', isDefault: true, icon: '🍔', color: '#ff9800' },
-      { name: 'Transport', type: 'expense', isDefault: true, icon: '🚌', color: '#2196f3' },
-      { name: 'Hostel/Rent', type: 'expense', isDefault: true, icon: '🏠', color: '#9c27b0' },
-      { name: 'Academics', type: 'expense', isDefault: true, icon: '📚', color: '#3f51b5' },
-      { name: 'Subscriptions', type: 'expense', isDefault: true, icon: '📱', color: '#00bcd4' },
-      { name: 'Entertainment', type: 'expense', isDefault: true, icon: '🎮', color: '#e91e63' },
-      { name: 'Miscellaneous', type: 'expense', isDefault: true, icon: '📦', color: '#607d8b' },
+      { name: 'Allowance', type: 'income', isDefault: true, icon: 'piggy-bank', color: '#4caf50' },
+      { name: 'Part-time Job', type: 'income', isDefault: true, icon: 'briefcase', color: '#8bc34a' },
+      { name: 'Scholarship', type: 'income', isDefault: true, icon: 'graduation-cap', color: '#cddc39' },
+      { name: 'Gift', type: 'income', isDefault: true, icon: 'gift', color: '#ffeb3b' },
+      { name: 'Other Income', type: 'income', isDefault: true, icon: 'wallet', color: '#ffc107' },
+      { name: 'Food', type: 'expense', isDefault: true, icon: 'utensils', color: '#ff9800' },
+      { name: 'Transport', type: 'expense', isDefault: true, icon: 'car', color: '#2196f3' },
+      { name: 'Hostel/Rent', type: 'expense', isDefault: true, icon: 'home', color: '#9c27b0' },
+      { name: 'Academics', type: 'expense', isDefault: true, icon: 'book-open', color: '#3f51b5' },
+      { name: 'Subscriptions', type: 'expense', isDefault: true, icon: 'smartphone', color: '#00bcd4' },
+      { name: 'Entertainment', type: 'expense', isDefault: true, icon: 'gamepad-2', color: '#e91e63' },
+      { name: 'Miscellaneous', type: 'expense', isDefault: true, icon: 'tag', color: '#607d8b' },
     ];
 
     const insertedCategories = await Category.insertMany(categoriesData);
@@ -126,7 +127,7 @@ const seedDatabase = async () => {
     const currentMonthStr = now.toISOString().slice(0, 7);
 
     for (let monthOffset = 0; monthOffset < 6; monthOffset++) {
-      const monthDate = new Date(now.getFullYear(), now.getMonth() - monthOffset, 15);
+      const monthDate = new Date(Date.UTC(now.getFullYear(), now.getMonth() - monthOffset, 15));
       
       // Fixed income
       transactions.push({
@@ -134,7 +135,7 @@ const seedDatabase = async () => {
         category: getCat('Allowance')._id,
         type: 'income',
         amount: 150000,
-        date: new Date(now.getFullYear(), now.getMonth() - monthOffset, 1),
+        date: new Date(Date.UTC(now.getFullYear(), now.getMonth() - monthOffset, 1)),
         description: 'Monthly Allowance',
       });
 
@@ -144,15 +145,17 @@ const seedDatabase = async () => {
         category: getCat('Hostel/Rent')._id,
         type: 'expense',
         amount: 50000, // $500
-        date: new Date(now.getFullYear(), now.getMonth() - monthOffset, 5),
+        date: new Date(Date.UTC(now.getFullYear(), now.getMonth() - monthOffset, 5)),
         description: 'Hostel Rent',
       });
 
       // Random other expenses (Transport, Academics, Entertainment, Subscriptions)
       const expenseCats = ['Transport', 'Academics', 'Entertainment', 'Subscriptions', 'Food'];
       
+      const maxDay = monthOffset === 0 ? Math.min(28, now.getUTCDate()) : 28;
+
       for (let i = 0; i < 20; i++) {
-        const randomDay = randomInt(1, 28);
+        const randomDay = randomInt(1, maxDay);
         const randomAmount = randomInt(500, 2500); // $5 to $25
         const randomCat = getCat(randomElement(expenseCats));
 
@@ -161,7 +164,7 @@ const seedDatabase = async () => {
           category: randomCat._id,
           type: 'expense',
           amount: randomAmount,
-          date: new Date(now.getFullYear(), now.getMonth() - monthOffset, randomDay),
+          date: new Date(Date.UTC(now.getFullYear(), now.getMonth() - monthOffset, randomDay)),
           description: `Random expense ${i}`,
         });
       }
@@ -174,7 +177,7 @@ const seedDatabase = async () => {
             category: getCat('Food')._id,
             type: 'expense',
             amount: randomInt(3000, 5000), // $30 to $50
-            date: new Date(now.getFullYear(), now.getMonth(), randomInt(1, 28)),
+            date: new Date(Date.UTC(now.getFullYear(), now.getMonth(), randomInt(1, maxDay))),
             description: `Extra food spike ${i}`,
           });
         }

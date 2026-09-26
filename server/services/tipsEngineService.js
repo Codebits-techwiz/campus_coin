@@ -6,6 +6,7 @@ import { Budget } from '../models/Budget.js';
 import { User } from '../models/User.js';
 import { TipTemplate } from '../models/TipTemplate.js';
 import { toAmount, toCents } from '../utils/money.js';
+import { formatMoney } from '../utils/currency.js';
 
 const userObjId = (id) => new mongoose.Types.ObjectId(id);
 
@@ -13,9 +14,9 @@ const userObjId = (id) => new mongoose.Types.ObjectId(id);
  * Built-in fallback templates used when no active TipTemplate exists for a ruleType.
  */
 const BUILT_IN_TEMPLATES = {
-  spending_spike: 'Your {category} spending is >120% of your 3-month baseline. Cutting back could save up to ${excess}.',
-  budget_warning: 'You have used over 80% of your {category} budget. You have ${remaining} left.',
-  savings_goal_at_risk: 'Your total expenses exceed your monthly allowance baseline by ${deficit}. Review non-essential spending.',
+  spending_spike: 'Your {category} spending is >120% of your 3-month baseline. Cutting back could save up to {excess}.',
+  budget_warning: 'You have used over 80% of your {category} budget. You have {remaining} left.',
+  savings_goal_at_risk: 'Your total expenses exceed your monthly allowance baseline by {deficit}. Review non-essential spending.',
 };
 
 /**
@@ -137,18 +138,18 @@ const evaluateSavingRules = async (userId, monthStr) => {
   const historyMap = new Map();
   historySpendAgg.forEach((h) => historyMap.set(h._id.toString(), h.avgCents));
 
-  currentSpendAgg.forEach(async (item) => {
+  for (const item of currentSpendAgg) {
     const avg = historyMap.get(item._id.toString()) || 0;
     if (avg > 0 && item.totalCents > 1.2 * avg) {
       const excessCents = Math.round(item.totalCents - avg);
       // Use admin template if available, else built-in fallback
       const text = await resolveTemplate('spending_spike', {
         category: item.cat.name,
-        excess: toAmount(excessCents).toFixed(2),
+        excess: formatMoney(toAmount(excessCents), user.currency),
       });
       tipsToEnsure.push({ ruleType: 'spending_spike', text, potentialSavings: excessCents });
     }
-  });
+  }
 
   // RULE 2: Budget warning >= 80%
   const budgets = await Budget.find({ user: userId, month: monthStr }).populate('category');
@@ -158,7 +159,7 @@ const evaluateSavingRules = async (userId, monthStr) => {
       const remainingCents = Math.max(0, budget.limitAmount - item.totalCents);
       const text = await resolveTemplate('budget_warning', {
         category: budget.category.name,
-        remaining: toAmount(remainingCents).toFixed(2),
+        remaining: formatMoney(toAmount(remainingCents), user.currency),
       });
       tipsToEnsure.push({ ruleType: 'budget_warning', text, potentialSavings: remainingCents });
     }
@@ -169,7 +170,7 @@ const evaluateSavingRules = async (userId, monthStr) => {
   if (user && user.monthlyAllowanceBaseline > 0 && totalExpenseCents > user.monthlyAllowanceBaseline) {
     const deficitCents = totalExpenseCents - user.monthlyAllowanceBaseline;
     const text = await resolveTemplate('savings_goal_at_risk', {
-      deficit: toAmount(deficitCents).toFixed(2),
+      deficit: formatMoney(toAmount(deficitCents), user.currency),
     });
     tipsToEnsure.push({ ruleType: 'savings_goal_at_risk', text, potentialSavings: deficitCents });
   }
@@ -198,6 +199,10 @@ const evaluateSavingRules = async (userId, monthStr) => {
     }
     savedTips.push(tipDoc);
   }
+
+  // Remove stale tips from this month that are no longer valid (e.g., budget was reduced)
+  const savedIds = savedTips.map((t) => t._id);
+  await Tip.deleteMany({ user: userId, month: monthStr, _id: { $nin: savedIds } });
 
   return savedTips;
 };

@@ -21,7 +21,7 @@ export const getTransaction = async (req, res, next) => {
   try {
     const transaction = await transactionService.getTransactionById(req.user.id, req.params.id);
     // Log 'view' asynchronously — don't await so it never slows the response
-    logActivity(req.user.id, 'view', req.params.id);
+    logActivity(req.user.id, 'view', req.params.id).catch((err) => console.error('[Activity Log Error]', err));
     return sendSuccess(res, 'Transaction retrieved successfully', transaction);
   } catch (error) {
     next(error);
@@ -36,7 +36,7 @@ export const createTransaction = async (req, res, next) => {
   try {
     const transaction = await transactionService.createTransaction(req.user.id, req.body);
     // Log 'create' after success — use the returned transaction's _id
-    logActivity(req.user.id, 'create', transaction._id);
+    logActivity(req.user.id, 'create', transaction._id).catch((err) => console.error('[Activity Log Error]', err));
     return sendSuccess(res, 'Transaction created successfully', transaction, HTTP_STATUS.CREATED);
   } catch (error) {
     next(error);
@@ -50,7 +50,7 @@ export const createTransaction = async (req, res, next) => {
 export const updateTransaction = async (req, res, next) => {
   try {
     const updated = await transactionService.updateTransaction(req.user.id, req.params.id, req.body);
-    logActivity(req.user.id, 'edit', req.params.id);
+    logActivity(req.user.id, 'edit', req.params.id).catch((err) => console.error('[Activity Log Error]', err));
     return sendSuccess(res, 'Transaction updated successfully', updated);
   } catch (error) {
     next(error);

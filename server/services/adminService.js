@@ -4,10 +4,14 @@ import { Transaction } from '../models/Transaction.js';
 import { Category } from '../models/Category.js';
 import Announcement from '../models/Announcement.js';
 import { TipTemplate } from '../models/TipTemplate.js';
+import { toAmount } from '../utils/money.js';
 
 // ─── Platform Stats ───────────────────────────────────────────────────────────
 export const getSystemStats = async () => {
   const activeUsers = await User.countDocuments({ role: 'student', isActive: true });
+
+  // Total non-deleted transaction count
+  const totalTransactions = await Transaction.countDocuments({ deletedAt: null });
 
   // Aggregate total income/expense volume — NO access to individual transactions
   const volumeResult = await Transaction.aggregate([
@@ -15,11 +19,11 @@ export const getSystemStats = async () => {
     { $group: { _id: '$type', totalVolume: { $sum: '$amount' } } },
   ]);
 
-  let totalIncome = 0;
-  let totalExpense = 0;
+  let totalIncomeCents = 0;
+  let totalExpenseCents = 0;
   volumeResult.forEach((item) => {
-    if (item._id === 'income') totalIncome = item.totalVolume;
-    if (item._id === 'expense') totalExpense = item.totalVolume;
+    if (item._id === 'income') totalIncomeCents = item.totalVolume;
+    if (item._id === 'expense') totalExpenseCents = item.totalVolume;
   });
 
   const topCategories = await Transaction.aggregate([
@@ -32,7 +36,15 @@ export const getSystemStats = async () => {
     { $project: { _id: 1, name: '$categoryInfo.name', count: 1 } },
   ]);
 
-  return { activeUsers, totalVolume: { income: totalIncome, expense: totalExpense }, topCategories };
+  return {
+    activeUsers,
+    totalTransactions,
+    totalVolume: {
+      income: toAmount(totalIncomeCents),
+      expense: toAmount(totalExpenseCents)
+    },
+    topCategories
+  };
 };
 
 // ─── Users ───────────────────────────────────────────────────────────────────

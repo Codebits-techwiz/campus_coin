@@ -7,11 +7,11 @@
 | **HTTP Security Headers** | `server.js` → `helmet()` | Adds Content-Security-Policy, HSTS, X-Frame-Options, X-Content-Type-Options and others on every response |
 | **CORS with credentials** | `server.js` → `cors({ origin: CLIENT_URL, credentials: true })` | Only the configured `CLIENT_URL` origin may send credentialed (cookie) requests; all other origins are blocked |
 | **httpOnly JWT Cookie** | `services/authService.js` | JWT is stored in an `httpOnly`, `sameSite`, `secure` cookie — JavaScript on the client cannot read it |
-| **JWT Verification** | `middleware/auth.js` → `requireAuth` | Every protected route verifies the cookie with `jwt.verify(token, JWT_SECRET)` before proceeding |
+| **JWT Verification** | `middleware/auth.js` → `requireAuth` | Every protected route validates the signed token cookie before proceeding |
 | **Role-Based Access Control** | `routes/adminRoutes.js` → `requireAdmin` inline middleware | All admin endpoints check `req.user.role === 'admin'` after `requireAuth`. Students cannot reach admin routes |
 | **Admin/Student Data Isolation** | `services/adminService.js` | Admin stats use platform-wide aggregations only. `getUsers()` explicitly omits `passwordHash` and never fetches transactions |
 | **Password Hashing** | `utils/crypto.js`, `services/authService.js`, `services/adminService.js` | `bcrypt.hash(password, 10)` — salted hashes; plaintext passwords are never stored or logged |
-| **Sensitive Field Exclusion — select: false** | `models/User.js` | `passwordHash`, `resetTokenHash`, `resetTokenExpires` have `select: false` — not returned from any `.find()` unless `.select('+passwordHash')` is used explicitly |
+| **Sensitive Field Exclusion — select: false** | `models/User.js` | `passwordHash`, `resetTokenHash`, `resetTokenExpires` have `select: false` — never returned from database queries unless explicitly requested by internal auth functions |
 | **Sensitive Field Exclusion — toJSON transform** | `models/User.js` | A `toJSON` transform deletes `passwordHash`, `resetTokenHash`, `resetTokenExpires`, and `__v` from every serialised user document — second safety net |
 | **Explicit hash unset after login** | `services/authService.js` | After comparing the password, `delete user.passwordHash` is called before returning the user object |
 | **Temp password — plain returned once, hash stored** | `services/adminService.js` → `resetStudentPassword` | Admin password reset generates a random 12-char password, immediately hashes it with bcrypt, stores only the hash, and returns the plaintext exactly once |

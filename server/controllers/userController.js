@@ -1,20 +1,20 @@
-import { User } from '../models/User.js';
+import * as userService from '../services/userService.js';
 import { sendSuccess, sendError } from '../utils/response.js';
 
-export const getProfile = async (req, res) => {
+export const getProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await userService.getUserProfile(req.user.id);
     sendSuccess(res, 'Profile retrieved', user);
   } catch (err) {
-    sendError(res, 500, err.message);
+    next(err);
   }
 };
 
-export const updateProfile = async (req, res) => {
+export const updateProfile = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndUpdate(req.user.id, req.body, { new: true, runValidators: true });
+    const user = await userService.updateUserProfile(req.user.id, req.body);
     sendSuccess(res, 'Profile updated', user);
   } catch (err) {
-    sendError(res, 400, err.message);
+    next(err);
   }
 };

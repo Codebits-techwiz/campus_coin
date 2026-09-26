@@ -1,8 +1,11 @@
+import mongoose from 'mongoose';
 import { Budget } from '../models/Budget.js';
 import { Transaction } from '../models/Transaction.js';
 import { Category } from '../models/Category.js';
 import { Notification } from '../models/Notification.js';
 import { toCents, toAmount } from '../utils/money.js';
+import { User } from '../models/User.js';
+import { formatMoney } from '../utils/currency.js';
 
 export const formatBudget = (budget, currentSpentCents = 0) => {
   const obj = budget.toObject ? budget.toObject() : { ...budget };
@@ -31,7 +34,7 @@ export const getBudgetsForMonth = async (userId, monthStr) => {
   const spendAgg = await Transaction.aggregate([
     {
       $match: {
-        user: new (require('mongoose').Types.ObjectId)(userId),
+        user: new mongoose.Types.ObjectId(userId),
         type: 'expense',
         deletedAt: null,
         date: { $gte: startOfMonth, $lte: endOfMonth }
@@ -114,8 +117,8 @@ export const checkAndTriggerBudgetAlert = async (userId, categoryId, transaction
   const spendResult = await Transaction.aggregate([
     {
       $match: {
-        user: new (require('mongoose').Types.ObjectId)(userId),
-        category: new (require('mongoose').Types.ObjectId)(categoryId),
+        user: new mongoose.Types.ObjectId(userId),
+        category: new mongoose.Types.ObjectId(categoryId),
         type: 'expense',
         deletedAt: null,
         date: { $gte: startOfMonth, $lte: endOfMonth }
@@ -133,13 +136,13 @@ export const checkAndTriggerBudgetAlert = async (userId, categoryId, transaction
   const percentage = (totalSpentCents / budget.limitAmount) * 100;
   const categoryName = budget.category ? budget.category.name : 'Category';
 
-  const spentDisplay = toAmount(totalSpentCents);
-  const limitDisplay = toAmount(budget.limitAmount);
+  const user = await User.findById(userId);
+  const currencyCode = user ? user.currency : 'USD';
 
   // 1. Check for >= 100% Exceeded Alert
   if (percentage >= 100) {
     const alertTitle = `⚠️ Budget Exceeded: ${categoryName}`;
-    const alertMessage = `You have spent $${spentDisplay} on ${categoryName} in ${monthStr}, exceeding your budget of $${limitDisplay} (${percentage.toFixed(0)}%).`;
+    const alertMessage = `You have spent ${formatMoney(totalSpentCents / 100, currencyCode)} on ${categoryName} in ${monthStr}, exceeding your budget of ${formatMoney(budget.limitAmount / 100, currencyCode)} (${percentage.toFixed(0)}%).`;
 
     // Duplicate check: Avoid creating duplicate alert in same month for same user/category
     const existing = await Notification.findOne({
@@ -161,7 +164,7 @@ export const checkAndTriggerBudgetAlert = async (userId, categoryId, transaction
   // 2. Check for >= 80% Warning Alert
   else if (percentage >= 80) {
     const alertTitle = `⚡ Budget Warning (80%): ${categoryName}`;
-    const alertMessage = `You have used ${percentage.toFixed(0)}% ($${spentDisplay} of $${limitDisplay}) of your ${categoryName} budget for ${monthStr}.`;
+    const alertMessage = `You have used ${percentage.toFixed(0)}% (${formatMoney(totalSpentCents / 100, currencyCode)} of ${formatMoney(budget.limitAmount / 100, currencyCode)}) of your ${categoryName} budget for ${monthStr}.`;
 
     const existing = await Notification.findOne({
       user: userId,

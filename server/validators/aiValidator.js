@@ -12,3 +12,7 @@ export const feedbackSchema = z.object({
 export const monthQuerySchema = z.object({
   month: z.string().regex(/^\d{4}-\d{2}$/, 'Month must be in format YYYY-MM').optional()
 });
+
+export const tipIdParamSchema = z.object({
+  id: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid Tip ID')
+});

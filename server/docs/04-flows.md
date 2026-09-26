@@ -17,7 +17,7 @@ sequenceDiagram
     S->>DB: Check email not duplicate
     S->>S: bcrypt.hash(password, 10)
     S->>DB: User.create({ name, email, passwordHash, role: 'student' })
-    S->>S: jwt.sign({ id }, JWT_SECRET, { expiresIn: '7d' })
+    S->>S: Generate token with 7-day expiration
     S-->>R: { token, user (no hash) }
     R->>C: Set httpOnly cookie 'jwt'; 201 { user }
 
@@ -27,7 +27,7 @@ sequenceDiagram
     S->>DB: User.findOne({ email }).select('+passwordHash')
     S->>S: bcrypt.compare(password, hash)
     S->>S: delete user.passwordHash (explicit unset)
-    S->>S: jwt.sign({ id }, JWT_SECRET)
+    S->>S: Generate token
     R->>C: Set httpOnly cookie 'jwt'; 200 { user }
 ```
 
@@ -291,7 +291,7 @@ sequenceDiagram
 
     C->>R: GET /api/bookmarks
     R->>S: getBookmarks(userId)
-    S->>DB: Bookmark.find({ user })
+    S->>DB: Fetch user's bookmarks
     S->>DB: For each bookmark, fetch from Tip or Insight collection based on refType
     S-->>R: bookmarks with populated ref items
     R->>C: 200 { bookmarks }
@@ -339,7 +339,7 @@ sequenceDiagram
     AS->>DB: ActivityLog.create(...)
 
     C->>DB: GET /api/activity/recent
-    DB->>DB: ActivityLog.find({ user }).sort({ at:-1 }).limit(50)
+    DB->>DB: Fetch latest 50 activity logs for user
     DB->>DB: Deduplicate by entityId (keep most recent per entity, stop at 10)
     DB->>DB: For each unique entityId, Transaction.findOne({ _id, user, deletedAt:null })
     DB-->>C: Array of { logId, action, at, transaction } — deleted txns silently skipped

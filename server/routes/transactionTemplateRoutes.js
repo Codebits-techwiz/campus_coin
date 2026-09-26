@@ -6,6 +6,9 @@ const router = express.Router();
 
 router.use(requireAuth);
 
+import { validate } from '../middleware/validate.js';
+import { createTemplateSchema, updateTemplateSchema } from '../validators/transactionValidator.js';
+
 /**
  * @swagger
  * tags:
@@ -28,7 +31,7 @@ router.use(requireAuth);
  *     summary: Delete a template
  *     tags: [Transaction Templates]
  */
-router.route('/').get(getTemplates).post(createTemplate);
-router.route('/:id').put(updateTemplate).delete(deleteTemplate);
+router.route('/').get(getTemplates).post(validate(createTemplateSchema), createTemplate);
+router.route('/:id').put(validate(updateTemplateSchema), updateTemplate).delete(deleteTemplate);
 
 export default router;

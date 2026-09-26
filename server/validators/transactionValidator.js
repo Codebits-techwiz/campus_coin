@@ -28,3 +28,19 @@ export const transactionFilterSchema = z.object({
   page: z.string().optional().default('1'),
   limit: z.string().optional().default('20')
 });
+
+export const createTemplateSchema = z.object({
+  name: z.string().min(1, 'Template name is required'),
+  category: z.string().min(1, 'Category ID is required'),
+  type: z.enum(['income', 'expense'], { required_error: 'Type must be income or expense' }),
+  amount: z.number().positive('Amount must be positive'),
+  description: z.string().optional().default('')
+});
+
+export const updateTemplateSchema = z.object({
+  name: z.string().min(1).optional(),
+  category: z.string().optional(),
+  type: z.enum(['income', 'expense']).optional(),
+  amount: z.number().positive().optional(),
+  description: z.string().optional()
+});

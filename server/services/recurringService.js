@@ -36,7 +36,7 @@ export const createRecurringRule = async (userId, data) => {
     description: data.description || '',
     frequency: data.frequency || 'monthly',
     nextRunDate: nextDate,
-    isActive: true
+    isActive: data.isActive !== undefined ? data.isActive : true
   });
 
   const populated = await RecurringRule.findById(rule._id).populate('category', 'name type icon color');
@@ -51,7 +51,18 @@ export const updateRecurringRule = async (userId, ruleId, updateData) => {
     throw error;
   }
 
-  if (updateData.category) rule.category = updateData.category;
+  if (updateData.category) {
+    const category = await Category.findOne({
+      _id: updateData.category,
+      $or: [{ isDefault: true }, { owner: userId }]
+    });
+    if (!category) {
+      const error = new Error('Invalid category ID');
+      error.statusCode = 400;
+      throw error;
+    }
+    rule.category = updateData.category;
+  }
   if (updateData.type) rule.type = updateData.type;
   if (updateData.amount !== undefined) rule.amount = toCents(updateData.amount);
   if (updateData.description !== undefined) rule.description = updateData.description;
