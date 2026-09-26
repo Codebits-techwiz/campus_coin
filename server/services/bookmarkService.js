@@ -23,9 +23,9 @@ export const getBookmarks = async (userId) => {
   // Manually populate: tips and insights are in different collections
   const populated = await Promise.all(
     bookmarks.map(async (bm) => {
-      const { Model } = resolveRef(bm.refType);
+      const { Model, populatePath } = resolveRef(bm.refType);
       const ref = await Model.findOne({ _id: bm.refId, user: userId }).lean();
-      return { ...bm, ref }; // embed the referenced document under 'ref'
+      return { ...bm, ref, [populatePath]: ref }; // embed under both 'ref' and 'tip'/'insight'
     })
   );
 
