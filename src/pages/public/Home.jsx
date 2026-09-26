@@ -579,11 +579,11 @@ export default function Home() {
           </p>
         </div>
         <div className="relative w-full overflow-hidden">
-          <div className="flex w-max animate-marquee gap-x-12 sm:gap-x-16 text-cc-forest/40 font-extrabold text-lg sm:text-xl tracking-tight whitespace-nowrap hover:[animation-play-state:paused]">
+          <div className="campus-marquee flex w-max animate-marquee gap-x-12 sm:gap-x-16 font-extrabold text-lg sm:text-xl tracking-tight whitespace-nowrap hover:[animation-play-state:paused]">
             {[...Array(2)].map((_, loop) => (
               <div key={loop} className="flex items-center gap-x-12 sm:gap-x-16 shrink-0 px-6">
                 {['Northbridge U', 'Greenfield State', 'Metro Tech', 'Riverdale College', 'Summit Institute'].map((name) => (
-                  <span key={`${loop}-${name}`} className="hover:text-cc-forest/70 transition">
+                  <span key={`${loop}-${name}`} className="campus-marquee-item transition">
                     {name}
                   </span>
                 ))}

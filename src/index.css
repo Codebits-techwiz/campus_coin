@@ -220,6 +220,20 @@ body.font-sm {
 .animate-marquee {
   animation: marquee 28s linear infinite;
 }
+
+/* University marquee: readable on light + dark backgrounds */
+.campus-marquee {
+  color: rgba(11, 61, 46, 0.4);
+}
+.campus-marquee-item:hover {
+  color: rgba(11, 61, 46, 0.7);
+}
+body.dark-mode .campus-marquee {
+  color: rgba(232, 240, 236, 0.5);
+}
+body.dark-mode .campus-marquee-item:hover {
+  color: rgba(232, 240, 236, 0.85);
+}
 .animate-loader-run {
   animation: loaderRun 1.1s ease-in-out infinite;
 }
